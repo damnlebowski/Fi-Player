@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously, annotate_overrides
 
 import 'package:flutter/material.dart';
-
+import '../../widget/drawer.dart';
 import '../screen_navbar_home/screen_navbar_home.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[50],
+      backgroundColor: mainBGColor,
       body: Center(child: Image.asset('assets/FI_PLAYER.png')),
     );
   }

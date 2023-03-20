@@ -3,6 +3,8 @@
 import 'package:fi_player/screens/screen_search/screen_search.dart';
 import 'package:flutter/material.dart';
 
+import 'drawer.dart';
+
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({super.key});
 
@@ -43,7 +45,16 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 },
                 icon: Icon(Icons.search)),
             PopupMenuButton(
-              itemBuilder: (context) => [PopupMenuItem(child: Text('Refresh'))],
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+              color: mainBGColor,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                    child:
+                        Text('Refresh', style: TextStyle(color: allTextColor)))
+              ],
             )
           ],
         ),

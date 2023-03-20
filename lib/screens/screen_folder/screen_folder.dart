@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
+import '../../widget/drawer.dart';
 import '../../widget/grid_view.dart';
 import '../../widget/list_view.dart';
 import '../screen_video_playing/screen_video_playing.dart';
@@ -12,7 +13,7 @@ class FolderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[50],
+      backgroundColor: mainBGColor,
       appBar: PreferredSize(
           child: AppBarWidget(), preferredSize: Size.fromHeight(70)),
       body: isListView == true

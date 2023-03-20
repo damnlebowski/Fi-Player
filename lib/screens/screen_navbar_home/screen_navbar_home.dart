@@ -28,6 +28,7 @@ class _NavbarPageState extends State<NavbarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: mainBGColor,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(70), child: AppBarWidget()),
         drawer: SafeArea(
@@ -35,6 +36,8 @@ class _NavbarPageState extends State<NavbarPage> {
         ),
         body: page.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: bottomNavColor,
             selectedItemColor: Colors.purple,
             unselectedItemColor: Colors.grey,
             showUnselectedLabels: true,

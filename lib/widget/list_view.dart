@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'drawer.dart';
+
 class ListViewWidget extends StatelessWidget {
   ListViewWidget(
       {super.key,
@@ -28,12 +30,15 @@ class ListViewWidget extends StatelessWidget {
             ),
             title: Text(
               '$title Name $index',
+              style: TextStyle(color: allTextColor),
               overflow: TextOverflow.ellipsis,
             ),
           );
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return Divider(
+            color: allTextColor,
+          );
         },
         itemCount: 15);
   }
@@ -62,12 +67,15 @@ class ListViewWidgetForVideos extends StatelessWidget {
             ),
             title: Text(
               '$title Name $index',
+              style: TextStyle(color: allTextColor),
               overflow: TextOverflow.ellipsis,
             ),
           );
         },
         separatorBuilder: (context, index) {
-          return Divider();
+          return Divider(
+            color: allTextColor,
+          );
         },
         itemCount: 15);
   }

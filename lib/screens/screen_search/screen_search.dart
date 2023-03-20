@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import '../../widget/drawer.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -8,7 +9,7 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple[50],
+      backgroundColor: mainBGColor,
       appBar: AppBar(
         title: Text('Search'),
       ),
@@ -19,6 +20,7 @@ class SearchPage extends StatelessWidget {
             child: TextField(
               autofocus: true,
               decoration: InputDecoration(labelText: 'Search'),
+              style: TextStyle(color: allTextColor),
             ),
           )
         ],

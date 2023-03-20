@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import '../../widget/drawer.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -8,6 +9,7 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: mainBGColor,
         appBar: AppBar(
           title: Text('Help'),
         ),

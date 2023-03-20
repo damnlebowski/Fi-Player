@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'drawer.dart';
+
 class GridViewWidget extends StatelessWidget {
   GridViewWidget(
       {super.key,
@@ -36,6 +38,7 @@ class GridViewWidget extends StatelessWidget {
                   ),
                   Text(
                     '$title Name $index',
+                    style: TextStyle(color: allTextColor),
                     overflow: TextOverflow.ellipsis,
                   )
                 ],
@@ -77,6 +80,7 @@ class GridViewWidgetForVideos extends StatelessWidget {
                   ),
                   Text(
                     '$title Name $index',
+                    style: TextStyle(color: allTextColor),
                     overflow: TextOverflow.ellipsis,
                   )
                 ],
