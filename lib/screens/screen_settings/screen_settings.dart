@@ -15,31 +15,25 @@ class StettingsScreen extends StatelessWidget {
       body: Column(
         children: [
           ListTile(
-            leading: Icon(
-              Icons.telegram,
-              color: Colors.blue[700],
-            ),
+            leading: Icon(Icons.telegram, color: Colors.purple),
             title: Text('Join Our Telegram Channel'),
           ),
           ListTile(
-            leading: Icon(
-              Icons.facebook,
-              color: Colors.blue[700],
-            ),
+            leading: Icon(Icons.facebook, color: Colors.purple),
             title: Text('Join Our Facebook Channel'),
           ),
           ListTile(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => PrivacyPolicy(),
             )),
-            leading: Icon(Icons.gpp_maybe_rounded),
+            leading: Icon(Icons.gpp_maybe_outlined, color: Colors.purple),
             title: Text('Privacy Policy'),
           ),
           ListTile(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AboutScreen(),
             )),
-            leading: Icon(Icons.gpp_maybe_rounded),
+            leading: Icon(Icons.info_outline, color: Colors.purple),
             title: Text('About'),
           )
         ],

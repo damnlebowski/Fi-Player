@@ -26,7 +26,7 @@ class DrawerWidget extends StatelessWidget {
           ),
           SizedBox(height: 20),
           ListTile(
-            leading: Icon(Icons.dark_mode_outlined),
+            leading: Icon(Icons.dark_mode_outlined, color: Colors.purple),
             title: Text('Dark Theme'),
             trailing: Switch(value: false, onChanged: (value) {}),
           ),
@@ -34,14 +34,14 @@ class DrawerWidget extends StatelessWidget {
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => StettingsScreen(),
             )),
-            leading: Icon(Icons.settings),
+            leading: Icon(Icons.settings_applications, color: Colors.purple),
             title: Text('Settings'),
           ),
           ListTile(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HelpScreen(),
             )),
-            leading: Icon(Icons.help),
+            leading: Icon(Icons.help_center_outlined, color: Colors.purple),
             title: Text('Help'),
           ),
         ]);

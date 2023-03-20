@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:fi_player/screens/screen_search/screen_search.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWidget extends StatefulWidget {
@@ -34,9 +35,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 icon: isListView == true
                     ? Icon(Icons.grid_view_sharp)
                     : Icon(Icons.format_list_numbered_sharp)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SearchPage(),
+                  ));
+                },
+                icon: Icon(Icons.search)),
             PopupMenuButton(
-              itemBuilder: (context) => [PopupMenuItem(child: Text('Refersh'))],
+              itemBuilder: (context) => [PopupMenuItem(child: Text('Refresh'))],
             )
           ],
         ),
