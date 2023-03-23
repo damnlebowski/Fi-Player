@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
+import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
 import '../screens/screen_help/screen_help.dart';
 
-bool isDarkMode = false;
+ValueNotifier<bool> isDarkMode = ValueNotifier(false);
 Color? mainBGColor = Colors.purple[50];
 Color? allTextColor = Colors.black;
 Color? bottomNavColor = Colors.white;
@@ -41,19 +42,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               style: TextStyle(color: allTextColor),
             ),
             trailing: Switch(
-                value: isDarkMode,
+                value: isDarkMode.value,
                 onChanged: (value) {
                   setState(() {
-                    if (isDarkMode == true) {
-                      isDarkMode = false;
+                    if (isDarkMode.value == true) {
+                      isDarkMode.value = false;
                       mainBGColor = Colors.purple[50];
                       allTextColor = Colors.black;
                       bottomNavColor = Colors.white;
+                      isListView.notifyListeners();
                     } else {
-                      isDarkMode = true;
+                      isDarkMode.value = true;
                       mainBGColor = Color.fromARGB(255, 43, 7, 48);
                       allTextColor = Colors.white;
                       bottomNavColor = Colors.black;
+                      isListView.notifyListeners();
                     }
                   });
                 }),

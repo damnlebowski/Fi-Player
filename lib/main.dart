@@ -4,6 +4,8 @@ import 'package:fi_player/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 

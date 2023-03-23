@@ -12,21 +12,25 @@ class FolderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mainBGColor,
-      appBar: PreferredSize(
-          child: AppBarWidget(), preferredSize: Size.fromHeight(70)),
-      body: isListView == true
-          ? ListViewWidget(
-              title: 'Video',
-              nextPage: VideoPlayingPage(),
-              icon: Icons.video_file_outlined,
-            )
-          : GridViewWidget(
-              title: 'Video',
-              nextPage: VideoPlayingPage(),
-              icon: Icons.video_file_outlined,
-            ),
-    );
+    return ValueListenableBuilder(
+        valueListenable: isListView,
+        builder: (context, value, child) {
+          return Scaffold(
+              backgroundColor: mainBGColor,
+              // appBar: PreferredSize(
+              //     child: AppBarWidget(), preferredSize: Size.fromHeight(70)),
+              // body: isListView.value == true
+              //     ? ListViewWidget(
+              //         title: 'Video',
+              //         nextPage: VideoPlayingPage(),
+              //         icon: Icons.video_file_outlined,
+              //       )
+              //     : GridViewWidget(
+              //         title: 'Video',
+              //         nextPage: VideoPlayingPage(),
+              //         icon: Icons.video_file_outlined,
+              //       ),
+              );
+        });
   }
 }

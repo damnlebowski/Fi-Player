@@ -12,16 +12,20 @@ class LocalFolderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mainBGColor,
-      body: isListView == true
-          ? ListViewWidget(
-              title: 'Folder', nextPage: FolderPage(), icon: Icons.folder)
-          : GridViewWidget(
-              title: 'Folder',
-              nextPage: FolderPage(),
-              icon: Icons.folder,
-            ),
-    );
+    return ValueListenableBuilder(
+        valueListenable: isListView,
+        builder: (context, value, child) {
+          return Scaffold(
+            backgroundColor: mainBGColor,
+            //         body: isListView.value == true
+            //             ? ListViewWidget(
+            //                 title: 'Folder', nextPage: FolderPage(), icon: Icons.folder)
+            //             : GridViewWidget(
+            //                 title: 'Folder',
+            //                 nextPage: FolderPage(),
+            //                 icon: Icons.folder,
+            //               ),
+          );
+        });
   }
 }

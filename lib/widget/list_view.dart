@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'dart:developer';
+
+import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:flutter/material.dart';
 
+import '../functions/all_functions.dart';
 import 'drawer.dart';
 
 class ListViewWidget extends StatelessWidget {
@@ -45,20 +49,21 @@ class ListViewWidget extends StatelessWidget {
 }
 
 class ListViewWidgetForVideos extends StatelessWidget {
-  ListViewWidgetForVideos(
-      {super.key, required this.title, required this.nextPage});
-  String title;
-  Widget nextPage;
+  ListViewWidgetForVideos({super.key, required this.notifier});
+
+  ValueNotifier notifier;
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return ListTile(
-            onLongPress: () {},
+            //liked and playlist
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => nextPage));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      VideoPlayingPage(videoPath: notifier.value[index])));
             },
             leading: Icon(
               Icons.video_file_outlined,
@@ -66,9 +71,28 @@ class ListViewWidgetForVideos extends StatelessWidget {
               color: Colors.purple,
             ),
             title: Text(
-              '$title Name $index',
+              notifier.value[index],
               style: TextStyle(color: allTextColor),
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
+            ),
+            trailing: PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                    child: Text('Add to liked videos'),
+                    onTap: () {
+                      if (!likedVideoNotify.value
+                          .contains(allVideosNotify.value[index])) {
+                        likedVideoNotify.value
+                            .add(allVideosNotify.value[index]);
+                        log('Successfully added to liked videos');
+                      } else {
+                        log('already contains');
+                      }
+                      // likedVideoNotify.notifyListeners();
+                    }),
+                PopupMenuItem(child: Text('Add to Playlist'))
+              ],
             ),
           );
         },
@@ -77,6 +101,6 @@ class ListViewWidgetForVideos extends StatelessWidget {
             color: allTextColor,
           );
         },
-        itemCount: 15);
+        itemCount: notifier.value.length);
   }
 }

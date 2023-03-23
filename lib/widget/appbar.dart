@@ -12,8 +12,6 @@ class AppBarWidget extends StatefulWidget {
   State<AppBarWidget> createState() => _AppBarWidgetState();
 }
 
-bool isListView = true;
-
 class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
@@ -27,14 +25,16 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    if (isListView == true) {
-                      isListView = false;
+                    if (isListView.value == true) {
+                      isListView.value = false;
+                      // isDarkMode.notifyListeners();
                     } else {
-                      isListView = true;
+                      isListView.value = true;
+                      // isDarkMode.notifyListeners();
                     }
                   });
                 },
-                icon: isListView == true
+                icon: isListView.value == true
                     ? Icon(Icons.grid_view_sharp)
                     : Icon(Icons.format_list_numbered_sharp)),
             IconButton(
@@ -62,3 +62,5 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     );
   }
 }
+
+ValueNotifier<bool> isListView = ValueNotifier(true);
