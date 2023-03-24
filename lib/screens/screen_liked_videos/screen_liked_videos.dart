@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fi_player/functions/all_functions.dart';
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -19,8 +18,8 @@ class LikedVideosPage extends StatelessWidget {
             backgroundColor: mainBGColor,
 
             body: isListView.value == true
-                ? ListViewWidgetForVideos(notifier: likedVideoNotify)
-                : GridViewWidgetForVideos(),
+                ? ListViewWidgetForLikedVideos()
+                : GridViewWidgetForLikedVideos(),
 
             // body: isListView.value == true
             //     ? ListViewWidget(

@@ -5,7 +5,8 @@ import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
 import '../../widget/grid_view.dart';
 import '../../widget/list_view.dart';
-import '../screen_folder/screen_folder.dart';
+
+List<String> allFolders = [];
 
 class LocalFolderPage extends StatelessWidget {
   const LocalFolderPage({super.key});
@@ -17,14 +18,9 @@ class LocalFolderPage extends StatelessWidget {
         builder: (context, value, child) {
           return Scaffold(
             backgroundColor: mainBGColor,
-            //         body: isListView.value == true
-            //             ? ListViewWidget(
-            //                 title: 'Folder', nextPage: FolderPage(), icon: Icons.folder)
-            //             : GridViewWidget(
-            //                 title: 'Folder',
-            //                 nextPage: FolderPage(),
-            //                 icon: Icons.folder,
-            //               ),
+            body: isListView.value == true
+                ? ListViewWidgetForFolders()
+                : GridViewWidgetForFolders(),
           );
         });
   }

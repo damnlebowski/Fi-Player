@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fi_player/functions/all_functions.dart';
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -18,10 +17,8 @@ class AllVideosPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: mainBGColor,
             body: isListView.value == true
-                ? ListViewWidgetForVideos(
-                    notifier: allVideosNotify,
-                  )
-                : GridViewWidgetForVideos(),
+                ? ListViewWidgetForAllVideos()
+                : GridViewWidgetForAllVideos(),
           );
         });
   }

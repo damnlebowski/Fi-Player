@@ -2,8 +2,9 @@
 
 import 'package:fi_player/screens/screen_search/screen_search.dart';
 import 'package:flutter/material.dart';
-
 import 'drawer.dart';
+
+ValueNotifier<bool> isListView = ValueNotifier(true);
 
 class AppBarWidget extends StatefulWidget {
   const AppBarWidget({super.key});
@@ -62,5 +63,3 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     );
   }
 }
-
-ValueNotifier<bool> isListView = ValueNotifier(true);

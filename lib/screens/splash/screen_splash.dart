@@ -6,8 +6,6 @@ import '../../functions/video_fetching.dart';
 import '../../widget/drawer.dart';
 import '../screen_navbar_home/screen_navbar_home.dart';
 
-
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -33,7 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   wait() async {
     await Future.delayed(Duration(seconds: 1));
-    var allVideos = await getAllVideos();
+    FetchAllVideos ob = FetchAllVideos();
+    List<String> allVideos = await ob.getAllVideos();
     allVideosNotify.value.addAll(allVideos);
     // allVideosNotify.notifyListeners();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
