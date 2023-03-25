@@ -18,7 +18,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   Widget build(BuildContext context) {
     return AppBar(
       // leading: IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
-      title: Text('FI Player'),
+      title: Text('Fi Player'),
       actions: [
         Row(
           mainAxisSize: MainAxisSize.min,
