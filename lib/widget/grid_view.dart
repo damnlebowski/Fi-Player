@@ -62,8 +62,11 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                               likedVideoNotify.value
                                   .add(allVideosNotify.value[index]);
                               log('Successfully added to liked videos');
+                              snackBarMessage(context,
+                                  'Successfully Added To Liked Videos');
                             } else {
                               log('already contains');
+                              snackBarMessage(context, 'Already Contains');
                             }
                           },
                         ),
@@ -142,8 +145,11 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                               likedVideoNotify.value
                                   .add(innerFolderData[index]);
                               log('Successfully added to liked videos');
+                              snackBarMessage(context,
+                                  'Successfully Added To Liked Videos');
                             } else {
                               log('already contains');
+                              snackBarMessage(context, 'Already Contains');
                             }
                           },
                         ),
@@ -332,20 +338,23 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
                           child: Text('Rename Playlist',
                               style: TextStyle(color: allTextColor)),
                           onTap: () {
-                            if (!likedVideoNotify.value
-                                .contains(allVideosNotify.value[index])) {
-                              likedVideoNotify.value
-                                  .add(allVideosNotify.value[index]);
-                              log('Successfully added to liked videos');
-                            } else {
-                              log('already contains');
-                            }
+                            // if (!likedVideoNotify.value
+                            //     .contains(allVideosNotify.value[index])) {
+                            //   likedVideoNotify.value
+                            //       .add(allVideosNotify.value[index]);
+                            //   log('Successfully added to liked videos');
+                            // } else {
+                            //   log('already contains');
+                            // }
                           },
                         ),
                         PopupMenuItem(
                           child: Text('Delete Playlist',
                               style: TextStyle(color: allTextColor)),
                           onTap: () {
+                            log('Removed "${playlistKey[index]}"');
+                            snackBarMessage(context,
+                                'Playlist "${playlistKey[index]}" Deleted');
                             playlist.remove(playlistKey[index]);
                             playlistKey.removeAt(index);
                             isListView.notifyListeners();
@@ -371,8 +380,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: GridView.builder(
-        itemCount:
-            playlist[playlistName] == null ? 0 : playlist[playlistName]!.length,
+        itemCount: playlist[playlistName]?.length ?? 0,
         physics: BouncingScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
@@ -409,8 +417,14 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                       color: mainBGColor,
                       itemBuilder: (context) => [
                         PopupMenuItem(
-                          child: Text('Delete From Playlist'),
+                          child: Text(
+                            'Remove From Playlist',
+                            style: TextStyle(color: allTextColor),
+                          ),
                           onTap: () {
+                            log('Song Removed From "$playlistName"');
+                            snackBarMessage(
+                                context, 'Song Removed From "$playlistName"');
                             playlist[playlistName]!.removeAt(index);
                             isListView.notifyListeners();
                           },

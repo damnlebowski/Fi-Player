@@ -53,8 +53,11 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                         likedVideoNotify.value
                             .add(allVideosNotify.value[index]);
                         log('Successfully added to liked videos');
+                        snackBarMessage(
+                            context, 'Successfully Added To Liked Videos');
                       } else {
                         log('already contains');
+                        snackBarMessage(context, 'Already Contains');
                       }
                       // likedVideoNotify.notifyListeners();
                     }),
@@ -161,8 +164,11 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
                           .contains(innerFolderData[index])) {
                         likedVideoNotify.value.add(innerFolderData[index]);
                         log('Successfully added to liked videos');
+                        snackBarMessage(
+                            context, 'Successfully Added To Liked Videos');
                       } else {
                         log('already contains');
+                        snackBarMessage(context, 'Already Contains');
                       }
                       // likedVideoNotify.notifyListeners();
                     }),
@@ -227,6 +233,8 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
                     likedVideoNotify.value
                         .remove(likedVideoNotify.value[index]);
                     isListView.notifyListeners();
+                    log('Removed From Liked');
+                    snackBarMessage(context, 'Removed From Liked');
                   },
                 ),
                 PopupMenuItem(
@@ -288,20 +296,22 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
                     child: Text('Rename Playlist',
                         style: TextStyle(color: allTextColor)),
                     onTap: () {
-                      if (!likedVideoNotify.value
-                          .contains(allVideosNotify.value[index])) {
-                        likedVideoNotify.value
-                            .add(allVideosNotify.value[index]);
-                        log('Successfully added to liked videos');
-                      } else {
-                        log('already contains');
-                      }
-                      // likedVideoNotify.notifyListeners();
+                      // if (!likedVideoNotify.value
+                      //     .contains(allVideosNotify.value[index])) {
+                      //   likedVideoNotify.value
+                      //       .add(allVideosNotify.value[index]);
+                      //   log('Successfully added to liked videos');
+                      // } else {
+                      //   log('already contains');
+                      // }
+                      // // likedVideoNotify.notifyListeners();
                     }),
                 PopupMenuItem(
                   child: Text('Delete Playlist',
                       style: TextStyle(color: allTextColor)),
                   onTap: () {
+                    log('Playlist "${playlistKey[index]}" Deleted');
+                    snackBarMessage(context, 'Removed "${playlistKey[index]}"');
                     playlist.remove(playlistKey[index]);
                     playlistKey.removeAt(index);
                     isListView.notifyListeners();
@@ -356,8 +366,14 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
               color: mainBGColor,
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  child: Text('Delete From Playlist'),
+                  child: Text(
+                    'Remove From Playlist',
+                    style: TextStyle(color: allTextColor),
+                  ),
                   onTap: () {
+                    log('Song Removed From "$playlistName"');
+                    snackBarMessage(
+                        context, 'Song Removed From "$playlistName"');
                     playlist[playlistName]!.removeAt(index);
                     isListView.notifyListeners();
                   },
@@ -371,9 +387,6 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
             color: allTextColor,
           );
         },
-        itemCount: playlist[playlistName] == null
-            ? 0
-            : playlist[playlistName]!.length);
+        itemCount: playlist[playlistName]?.length ?? 0);
   }
 }
-

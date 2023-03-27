@@ -85,8 +85,12 @@ class _SearchPageState extends State<SearchPage> {
                                     likedVideoNotify.value
                                         .add(searchList[index]);
                                     log('Successfully added to liked videos');
+                                    snackBarMessage(context,
+                                        'Successfully Added To Liked Videos');
                                   } else {
                                     log('already contains');
+                                    snackBarMessage(
+                                        context, 'Already Contains');
                                   }
                                   // likedVideoNotify.notifyListeners();
                                 }),

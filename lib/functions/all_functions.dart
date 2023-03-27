@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../screens/screen_local_folder/screen_local_folder.dart';
 import '../widget/appbar.dart';
@@ -102,6 +104,13 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                                             .contains(listFrom[videoIndex])) {
                                           playlist[playlistKey[index]]!
                                               .add(listFrom[videoIndex]);
+                                          log('Successfully Added To "${playlistKey[index]}"');
+                                          snackBarMessage(context,
+                                              'Successfully Added To "${playlistKey[index]}"');
+                                        } else {
+                                          log('Already Contains');
+                                          snackBarMessage(
+                                              context, 'Already Contains');
                                         }
                                         Navigator.of(context).pop();
                                       },
@@ -132,4 +141,19 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
       },
     ),
   );
+}
+
+//snackbar message
+void snackBarMessage(BuildContext context, String message) {
+  ScaffoldMessenger.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(
+            color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.purple[100],
+      elevation: 5,
+    ));
 }
