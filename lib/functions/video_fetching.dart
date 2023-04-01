@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 // import 'package:flutter/material.dart';
 import 'package:fi_player/functions/all_functions.dart';
-import 'package:fi_player/screens/screen_local_folder/screen_local_folder.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'dart:async';
@@ -36,6 +35,8 @@ class FetchAllVideos {
 
       for (var paths in extDir!) {
         String path = paths.toString();
+        print('object');
+        print(path);
         String actualPath = path.substring(13, path.length - 1);
         int found = 0;
         int startIndex = 0;

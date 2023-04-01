@@ -390,7 +390,7 @@ packages:
     source: hosted
     version: "2.1.4"
   video_player:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: video_player
       sha256: "868a139229acb5018d22aded3eb9cb4767ff43a8216573c086b6c535a4957481"

@@ -1,17 +1,15 @@
-// ignore_for_file: avoid_print, prefer_const_constructors
+// ignore_for_file: avoid_print, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import '../screens/screen_local_folder/screen_local_folder.dart';
 import '../widget/appbar.dart';
 import '../widget/drawer.dart';
 
 ValueNotifier<List<String>> allVideosNotify = ValueNotifier([]);
 
-ValueNotifier<List> likedVideoNotify = ValueNotifier([]);
+ValueNotifier<List<String>> likedVideoNotify = ValueNotifier([]);
 
-ValueNotifier<List> innerFolderVideoNotify = ValueNotifier([]);
+List<String> allFolders = [];
 
 Map<String, List<String>> playlist = {};
 
@@ -74,8 +72,9 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                     controller: playlistController,
                     // autofocus: true,
                     decoration: InputDecoration(
-                        labelText: 'playlist name',
-                        labelStyle: TextStyle(color: Colors.purple)),
+                        labelText: 'Playlist Name',
+                        labelStyle: TextStyle(color: Colors.purple),
+                        border: OutlineInputBorder()),
                     style: TextStyle(color: allTextColor),
                   ),
                   SizedBox(
@@ -92,47 +91,66 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                       },
                       child: Text('add')),
                   Expanded(
-                      child: ValueListenableBuilder(
-                          valueListenable: isListView,
-                          builder: (context, value, child) =>
-                              ListView.separated(
-                                  physics: BouncingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        if (!playlist[playlistKey[index]]!
-                                            .contains(listFrom[videoIndex])) {
-                                          playlist[playlistKey[index]]!
-                                              .add(listFrom[videoIndex]);
-                                          log('Successfully Added To "${playlistKey[index]}"');
-                                          snackBarMessage(context,
-                                              'Successfully Added To "${playlistKey[index]}"');
-                                        } else {
-                                          log('Already Contains');
-                                          snackBarMessage(
-                                              context, 'Already Contains');
-                                        }
-                                        Navigator.of(context).pop();
-                                      },
-                                      leading: Icon(
-                                        Icons.playlist_play,
-                                        color: Colors.purple,
-                                        size: 60,
-                                      ),
-                                      title: Text(
-                                        playlistKey[index],
-                                        style: TextStyle(color: allTextColor),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return Divider(
-                                      color: allTextColor,
-                                    );
-                                  },
-                                  itemCount: playlist.length)))
+                    child: ValueListenableBuilder(
+                        valueListenable: isListView,
+                        builder: (context, value, child) => playlist.isEmpty
+                            ? Center(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.mood_bad_sharp,
+                                    color: Colors.purple,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'No Playlist',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ],
+                              ))
+                            : ListView.separated(
+                                // shrinkWrap: true,
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    onTap: () {
+                                      if (!playlist[playlistKey[index]]!
+                                          .contains(listFrom[videoIndex])) {
+                                        playlist[playlistKey[index]]!
+                                            .add(listFrom[videoIndex]);
+                                        log('Successfully Added To "${playlistKey[index]}"');
+                                        snackBarMessage(context,
+                                            'Successfully Added To "${playlistKey[index]}"');
+                                      } else {
+                                        log('Already Contains');
+                                        snackBarMessage(
+                                            context, 'Already Contains');
+                                      }
+                                      Navigator.of(context).pop();
+                                    },
+                                    leading: Icon(
+                                      Icons.playlist_play,
+                                      color: Colors.purple,
+                                      size: 60,
+                                    ),
+                                    title: Text(
+                                      playlistKey[index],
+                                      style: TextStyle(color: allTextColor),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Divider(
+                                    color: allTextColor,
+                                  );
+                                },
+                                itemCount: playlist.length)),
+                  )
                 ],
               ),
             ),

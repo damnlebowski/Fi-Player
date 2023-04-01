@@ -26,7 +26,7 @@ class PlaylistPage extends StatelessWidget {
                     builder: (context) {
                       return Center(
                           child: SizedBox(
-                        height: 300,
+                        height: 200,
                         width: 300,
                         child: Card(
                           child: Padding(
@@ -37,7 +37,8 @@ class PlaylistPage extends StatelessWidget {
                                 TextField(
                                   autofocus: true,
                                   decoration: InputDecoration(
-                                      hintText: 'playlist name'),
+                                      labelText: 'Playlist Name',
+                                      border: OutlineInputBorder()),
                                   controller: playlistController,
                                 ),
                                 SizedBox(

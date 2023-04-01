@@ -6,7 +6,7 @@ import '../../widget/drawer.dart';
 import '../../widget/grid_view.dart';
 import '../../widget/list_view.dart';
 
-List<String> allFolders = [];
+
 
 class LocalFolderPage extends StatelessWidget {
   const LocalFolderPage({super.key});
