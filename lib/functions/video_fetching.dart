@@ -35,8 +35,6 @@ class FetchAllVideos {
 
       for (var paths in extDir!) {
         String path = paths.toString();
-        print('object');
-        print(path);
         String actualPath = path.substring(13, path.length - 1);
         int found = 0;
         int startIndex = 0;
@@ -62,7 +60,8 @@ class FetchAllVideos {
           }).toList();
 
           for (var directories in initialDirectories) {
-            if (directories.toString().endsWith('.mp4')) {
+            if (directories.toString().endsWith('.mp4') ||
+                directories.toString().endsWith('.mkv')) {
               log("FETCHING : $directories");
               videosDirectories.add("$directories/");
             }
@@ -84,7 +83,8 @@ class FetchAllVideos {
             return e.path;
           }).toList();
           for (var video in initialDirectories) {
-            if (video.toString().endsWith('.mp4')) {
+            if (video.toString().endsWith('.mp4') ||
+                video.toString().endsWith('.mkv')) {
               log("FETCHING 1st : $video");
               videosDirectories.add(video);
               //checking for folders to create
@@ -110,7 +110,8 @@ class FetchAllVideos {
                   }).toList();
 
                   for (var video in videoDirs) {
-                    if (video.toString().endsWith('.mp4')) {
+                    if (video.toString().endsWith('.mp4') ||
+                        video.toString().endsWith('.mkv')) {
                       log("FETCHING 2nd : $video");
                       videosDirectories.add(video);
                       //checking for folders to create

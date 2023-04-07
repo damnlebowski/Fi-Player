@@ -1,3 +1,4 @@
+import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../widget/appbar.dart';

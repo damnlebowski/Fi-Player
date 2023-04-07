@@ -1,12 +1,23 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:fi_player/functions/all_functions.dart';
+import 'package:fi_player/model/model.dart';
 import 'package:fi_player/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  if (!Hive.isAdapterRegistered(LikedVideoAdapter().typeId)) {
+    Hive.registerAdapter(LikedVideoAdapter());
+  }
+  if (!Hive.isAdapterRegistered(PlayListAdapter().typeId)) {
+    Hive.registerAdapter(PlayListAdapter());
+  }
 
-  runApp(MyApp());
+  await Hive.openBox<LikedVideo>('liked_video');
+  await Hive.openBox<PlayList>('playlist_video');
+  getEverthing();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

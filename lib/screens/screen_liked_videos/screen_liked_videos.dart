@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:fi_player/functions/all_functions.dart';
+import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -16,12 +18,9 @@ class LikedVideosPage extends StatelessWidget {
         builder: (context, value, child) {
           return Scaffold(
             backgroundColor: mainBGColor,
-
             body: isListView.value == true
                 ? ListViewWidgetForLikedVideos()
                 : GridViewWidgetForLikedVideos(),
-
-           
           );
         });
   }

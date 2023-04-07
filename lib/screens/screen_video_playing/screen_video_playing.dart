@@ -14,7 +14,7 @@ class VideoPlayingPage extends StatefulWidget {
       required this.fromList,
       required this.curentIndex});
   String videoPath;
-  List<String> fromList;
+  List fromList;
   int curentIndex;
   @override
   State<VideoPlayingPage> createState() => _VideoPlayingPageState();
@@ -67,59 +67,59 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 
 //..........................
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            child: Icon(Icons.skip_previous),
-            onPressed: () {
-              if (widget.curentIndex > 0) {
-                widget.curentIndex--;
-                videoPlayerController.pause();
-                videoPlayerController = VideoPlayerController.asset(
-                    widget.fromList[widget.curentIndex])
-                  ..initialize().then((_) {
-                    setState(() {});
-                    videoPlayerController.play();
-                  });
-              }
-            },
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            child: Icon(videoPlayerController.value.isPlaying
-                ? Icons.pause
-                : Icons.play_arrow),
-            onPressed: () {
-              setState(() {
-                if (videoPlayerController.value.isPlaying) {
-                  log('${widget.fromList}');
-                  log('${widget.curentIndex}');
-                  videoPlayerController.pause();
-                } else {
-                  videoPlayerController.play();
-                }
-              });
-            },
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            child: Icon(Icons.skip_next),
-            onPressed: () {
-              if (widget.curentIndex < widget.fromList.length - 1) {
-                widget.curentIndex++;
-                videoPlayerController.pause();
-                videoPlayerController = VideoPlayerController.asset(
-                    widget.fromList[widget.curentIndex])
-                  ..initialize().then((_) {
-                    setState(() {});
-                    videoPlayerController.play();
-                  });
-              }
-            },
-          ),
-        ],
-      ),
+      // floatingActionButton: Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //   children: [
+      //     FloatingActionButton(
+      //       child: Icon(Icons.skip_previous),
+      //       onPressed: () {
+      //         if (widget.curentIndex > 0) {
+      //           widget.curentIndex--;
+      //           videoPlayerController.pause();
+      //           videoPlayerController = VideoPlayerController.asset(
+      //               widget.fromList[widget.curentIndex].likedVideoPath)
+      //             ..initialize().then((_) {
+      //               setState(() {});
+      //               videoPlayerController.play();
+      //             });
+      //         }
+      //       },
+      //     ),
+      //     FloatingActionButton(
+      //       heroTag: null,
+      //       child: Icon(videoPlayerController.value.isPlaying
+      //           ? Icons.pause
+      //           : Icons.play_arrow),
+      //       onPressed: () {
+      //         setState(() {
+      //           if (videoPlayerController.value.isPlaying) {
+      //             log('${widget.fromList}');
+      //             log('${widget.curentIndex}');
+      //             videoPlayerController.pause();
+      //           } else {
+      //             videoPlayerController.play();
+      //           }
+      //         });
+      //       },
+      //     ),
+      //     FloatingActionButton(
+      //       heroTag: null,
+      //       child: Icon(Icons.skip_next),
+      //       onPressed: () {
+      //         if (widget.curentIndex < widget.fromList.length - 1) {
+      //           widget.curentIndex++;
+      //           videoPlayerController.pause();
+      //           videoPlayerController = VideoPlayerController.asset(
+      //               widget.fromList[widget.curentIndex].likedVideoPath)
+      //             ..initialize().then((_) {
+      //               setState(() {});
+      //               videoPlayerController.play();
+      //             });
+      //         }
+      //       },
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

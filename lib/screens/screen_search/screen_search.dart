@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
+import '../../functions/thumbnail_fetching.dart';
 import '../../widget/drawer.dart';
 import '../screen_video_playing/screen_video_playing.dart';
 
@@ -81,10 +82,27 @@ class _SearchPageState extends State<SearchPage> {
                                         curentIndex: index,
                                       )));
                             },
-                            leading: SizedBox(
-                              height: 60,
-                              width: 80,
-                              child: ColoredBox(color: Colors.blue),
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    color: Colors.black,
+                                    height: 95,
+                                    // height: MediaQuery.of(context).size.height *
+                                    //     0.09,
+                                    width: 100,
+                                    child: ThumbnailWidget(
+                                        videoPath: searchList[index]),
+                                  ),
+                                  Positioned(
+                                      bottom: 5,
+                                      right: 5,
+                                      child: VideoDuration(
+                                        videoPath: searchList[index],
+                                      ))
+                                ],
+                              ),
                             ),
                             title: Text(
                               getVideoName(searchList[index]),
@@ -103,19 +121,8 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Text('Add to liked videos',
                                         style: TextStyle(color: allTextColor)),
                                     onTap: () {
-                                      if (!likedVideoNotify.value
-                                          .contains(searchList[index])) {
-                                        likedVideoNotify.value
-                                            .add(searchList[index]);
-                                        log('Successfully added to liked videos');
-                                        snackBarMessage(context,
-                                            'Successfully Added To Liked Videos');
-                                      } else {
-                                        log('already contains');
-                                        snackBarMessage(
-                                            context, 'Already Contains');
-                                      }
-                                      // likedVideoNotify.notifyListeners();
+                                      addLikedVideos(
+                                          index, context, searchList);
                                     }),
                                 PopupMenuItem(
                                   child: Text('Add to Playlist',

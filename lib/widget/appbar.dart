@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/screens/screen_search/screen_search.dart';
 import 'package:flutter/material.dart';
 import 'drawer.dart';
@@ -53,8 +54,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               color: mainBGColor,
               itemBuilder: (context) => [
                 PopupMenuItem(
-                    child:
-                        Text('Refresh', style: TextStyle(color: allTextColor)))
+                  child: Text('Refresh', style: TextStyle(color: allTextColor)),
+                  onTap: () {
+                    likedVideoNotify.value.clear();
+                    playlist.clear();
+                    playlistKey.clear();
+                    isListView.notifyListeners();
+                  },
+                )
               ],
             )
           ],
