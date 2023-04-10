@@ -5,17 +5,22 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:fi_player/functions/all_functions.dart';
+import 'package:fi_player/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../../widget/drawer.dart';
-
 class VideoPlayingPage extends StatefulWidget {
-  VideoPlayingPage({super.key, required this.index, required this.fromList});
+  VideoPlayingPage(
+      {super.key,
+      required this.index,
+      required this.fromList,
+      required this.seekFrom});
   int index;
   List<String> fromList;
+  int seekFrom;
 
   @override
   State<VideoPlayingPage> createState() => _VideoPlayingPageState();
@@ -44,6 +49,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 
   @override
   void initState() {
+    log('${widget.seekFrom}');
     // TODO: implement initState
     super.initState();
     controller = VideoPlayerController.file(File(widget.fromList[widget.index]))
@@ -51,7 +57,10 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
         () => setState(() {}),
       )
       ..setLooping(true)
-      ..initialize().then((_) => setPlayingOrientation());
+      ..initialize().then((_) {
+        controller.seekTo(Duration(seconds: widget.seekFrom));
+        setPlayingOrientation();
+      });
   }
 
   setPlayingOrientation() async {
@@ -73,9 +82,21 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
   @override
   void dispose() {
     // TODO: implement dispose
+
+    storeLastPlayed();
     setAllOrientationToDefault();
     controller.dispose();
+
     super.dispose();
+  }
+
+  storeLastPlayed() async {
+    final lastPlayedBox = Hive.box<LastPlayed>('last_played');
+    final lastPlayedModel = LastPlayed(
+        video: widget.fromList[widget.index],
+        position: controller.value.position.inSeconds);
+    await lastPlayedBox.clear();
+    await lastPlayedBox.add(lastPlayedModel);
   }
 
   Future setAllOrientationToDefault() async {
@@ -90,8 +111,8 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
   @override
   Widget build(BuildContext context) {
     final isMuted = controller.value.volume == 0;
-    bool skipPluse = true;
-    bool skipMinus = false;
+    // bool skipPluse = true;
+    // bool skipMinus = false;
     return Scaffold(
       body: Container(
           color: Colors.black,
@@ -144,8 +165,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                       width: 160,
                       child: InkWell(
                         onDoubleTap: () {
-                          skipPluse = false;
-
                           controller.seekTo(controller.value.position +
                               Duration(seconds: 10));
                           setState(() {});

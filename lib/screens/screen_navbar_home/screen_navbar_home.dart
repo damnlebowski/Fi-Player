@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields, must_be_immutable, prefer_const_constructors_in_immutables
 import 'package:fi_player/functions/all_functions.dart';
+import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import '../../model/model.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
 import '../screen_all_videos/screen_all_videos.dart';
@@ -57,7 +60,19 @@ class _NavbarPageState extends State<NavbarPage> {
                       icon: Icon(Icons.playlist_add_rounded), label: 'PlayList')
                 ]),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                final lastPlayedBox = Hive.box<LastPlayed>('last_played');
+                if (lastPlayedBox.isNotEmpty) {
+                  LastPlayed lastPlayedModel = lastPlayedBox.values.first;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VideoPlayingPage(
+                          index: 0,
+                          fromList: [lastPlayedModel.video],
+                          seekFrom: lastPlayedModel.position)));
+                } else {
+                  snackBarMessage(context, 'No Videos Played Yet.');
+                }
+              },
               child: Icon(
                 Icons.play_circle_outline,
                 size: 35,

@@ -2,13 +2,11 @@
 
 import 'dart:developer';
 import 'package:fi_player/functions/thumbnail_fetching.dart';
-import 'package:fi_player/model/model.dart';
 import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_video_folder.dart';
 import 'package:fi_player/screens/screen_inner_playlist/screen_inner_playlist.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import '../functions/all_functions.dart';
 import 'drawer.dart';
 
@@ -45,6 +43,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                       builder: (context) => VideoPlayingPage(
                             fromList: allVideosNotify.value,
                             index: index,
+                            seekFrom: 0,
                           )));
                 },
                 leading: ClipRRect(
@@ -180,6 +179,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
                   builder: (context) => VideoPlayingPage(
                         fromList: innerFolderData,
                         index: index,
+                        seekFrom: 0,
                       )));
             },
             leading: ClipRRect(
@@ -274,6 +274,7 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
                       builder: (context) => VideoPlayingPage(
                             fromList: likedVideoNotify.value,
                             index: index,
+                            seekFrom: 0,
                           )));
                 },
                 leading: ClipRRect(
@@ -455,6 +456,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                       builder: (context) => VideoPlayingPage(
                             fromList: playlist[playlistName]!,
                             index: index,
+                            seekFrom: 0,
                           )));
                 },
                 leading: ClipRRect(

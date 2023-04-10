@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../functions/thumbnail_fetching.dart';
@@ -79,6 +77,7 @@ class _SearchPageState extends State<SearchPage> {
                                   builder: (context) => VideoPlayingPage(
                                         fromList: searchList,
                                         index: index,
+                                        seekFrom: 0,
                                       )));
                             },
                             leading: ClipRRect(

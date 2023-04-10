@@ -76,3 +76,40 @@ class PlayListAdapter extends TypeAdapter<PlayList> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class LastPlayedAdapter extends TypeAdapter<LastPlayed> {
+  @override
+  final int typeId = 3;
+
+  @override
+  LastPlayed read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return LastPlayed(
+      video: fields[0] as String,
+      position: fields[1] as int,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, LastPlayed obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.video)
+      ..writeByte(1)
+      ..write(obj.position);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LastPlayedAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

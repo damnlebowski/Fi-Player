@@ -19,13 +19,16 @@ class PlayList extends HiveObject {
   PlayList({required this.playlistName, required this.videosList});
 }
 
-// @HiveType(typeId: 3)
-// class IsListView extends HiveObject {
-//   @HiveField(0)
-//   final bool isListView;
+@HiveType(typeId: 3)
+class LastPlayed extends HiveObject {
+  @HiveField(0)
+  final String video;
 
-//   IsListView({required this.isListView});
-// }
+  @HiveField(1)
+  final int position;
+
+  LastPlayed({required this.video, required this.position});
+}
 
 // @HiveType(typeId: 4)
 // class IsDarkMode extends HiveObject {

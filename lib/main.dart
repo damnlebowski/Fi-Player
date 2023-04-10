@@ -13,9 +13,13 @@ void main(List<String> args) async {
   if (!Hive.isAdapterRegistered(PlayListAdapter().typeId)) {
     Hive.registerAdapter(PlayListAdapter());
   }
+  if (!Hive.isAdapterRegistered(LastPlayedAdapter().typeId)) {
+    Hive.registerAdapter(LastPlayedAdapter());
+  }
 
   await Hive.openBox<LikedVideo>('liked_video');
   await Hive.openBox<PlayList>('playlist_video');
+  await Hive.openBox<LastPlayed>('last_played');
   getEverthing();
   runApp(const MyApp());
 }

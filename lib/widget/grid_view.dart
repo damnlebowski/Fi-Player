@@ -48,6 +48,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                           builder: (context) => VideoPlayingPage(
                                 fromList: allVideosNotify.value,
                                 index: index,
+                                seekFrom: 0,
                               )));
                     },
                     child: Column(
@@ -139,6 +140,7 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                     builder: (context) => VideoPlayingPage(
                           fromList: innerFolderData,
                           index: index,
+                          seekFrom: 0,
                         )));
               },
               child: Column(
@@ -306,6 +308,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
                           builder: (context) => VideoPlayingPage(
                                 fromList: likedVideoNotify.value,
                                 index: index,
+                                seekFrom: 0,
                               )));
                     },
                     child: Column(
@@ -515,6 +518,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                           builder: (context) => VideoPlayingPage(
                                 fromList: playlist[playlistName]!,
                                 index: index,
+                                seekFrom: 0,
                               )));
                     },
                     child: Column(
