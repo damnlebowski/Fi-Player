@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/screens/screen_privacy_policy/screen_privacy_policy.dart';
 import 'package:fi_player/screens/screen_terms_and_condition/screen_terms_and_condition.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class StettingsScreen extends StatelessWidget {
             leading: Icon(Icons.telegram, color: Colors.purple),
             title: Text('Join Our Telegram Channel',
                 style: TextStyle(color: allTextColor)),
+            onTap: () => getToTelegram(),
           ),
           ListTile(
             leading: Icon(Icons.facebook, color: Colors.purple),

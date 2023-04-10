@@ -77,9 +77,8 @@ class _SearchPageState extends State<SearchPage> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => VideoPlayingPage(
-                                        videoPath: searchList[index],
                                         fromList: searchList,
-                                        curentIndex: index,
+                                        index: index,
                                       )));
                             },
                             leading: ClipRRect(
@@ -121,8 +120,7 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Text('Add to liked videos',
                                         style: TextStyle(color: allTextColor)),
                                     onTap: () {
-                                      addLikedVideos(
-                                          index, context, searchList);
+                                      addLikedVideo(index, context, searchList);
                                     }),
                                 PopupMenuItem(
                                   child: Text('Add to Playlist',

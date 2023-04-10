@@ -5,6 +5,7 @@ import 'package:fi_player/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widget/appbar.dart';
 import '../widget/drawer.dart';
 
@@ -217,7 +218,7 @@ getEverthing() async {
 
 //add Liked Videos
 
-void addLikedVideos(
+void addLikedVideo(
     int index, BuildContext context, List<String> fromList) async {
   if (!likedVideoNotify.value.contains(fromList[index])) {
     final likedModel = LikedVideo(video: fromList[index]);
@@ -235,7 +236,7 @@ void addLikedVideos(
 
 //remove liked videos
 
-void removeLikedVideos(int index, BuildContext context) {
+void removeLikedVideo(int index, BuildContext context) {
   final likedBox = Hive.box<LikedVideo>('liked_video');
   likedVideoNotify.value.removeAt(index);
   likedBox.deleteAt(index);
@@ -374,4 +375,12 @@ void renamePlaylist(int index, BuildContext context) {
       },
     ),
   );
+}
+
+//join our telegram
+
+getToTelegram() async {
+  String telegramUrl = "https://t.me/fi_player";
+  Uri uri = Uri.parse(telegramUrl);
+  await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
 }

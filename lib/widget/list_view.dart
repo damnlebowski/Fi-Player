@@ -43,9 +43,8 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => VideoPlayingPage(
-                            videoPath: allVideosNotify.value[index],
                             fromList: allVideosNotify.value,
-                            curentIndex: index,
+                            index: index,
                           )));
                 },
                 leading: ClipRRect(
@@ -85,7 +84,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                         child: Text('Add to liked videos',
                             style: TextStyle(color: allTextColor)),
                         onTap: () {
-                          addLikedVideos(index, context, allVideosNotify.value);
+                          addLikedVideo(index, context, allVideosNotify.value);
                         }),
                     PopupMenuItem(
                       child: Text('Add to Playlist',
@@ -179,9 +178,8 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => VideoPlayingPage(
-                        videoPath: innerFolderData[index],
                         fromList: innerFolderData,
-                        curentIndex: index,
+                        index: index,
                       )));
             },
             leading: ClipRRect(
@@ -220,7 +218,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
                     child: Text('Add to liked videos',
                         style: TextStyle(color: allTextColor)),
                     onTap: () {
-                      addLikedVideos(index, context, innerFolderData);
+                      addLikedVideo(index, context, innerFolderData);
                     }),
                 PopupMenuItem(
                   child: Text('Add to Playlist',
@@ -274,9 +272,8 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => VideoPlayingPage(
-                            videoPath: likedVideoNotify.value[index],
                             fromList: likedVideoNotify.value,
-                            curentIndex: index,
+                            index: index,
                           )));
                 },
                 leading: ClipRRect(
@@ -316,7 +313,7 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
                       child: Text('Remove liked videos',
                           style: TextStyle(color: allTextColor)),
                       onTap: () {
-                        removeLikedVideos(index, context);
+                        removeLikedVideo(index, context);
                       },
                     ),
                     PopupMenuItem(
@@ -421,8 +418,6 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
             },
             itemCount: playlistKey.length);
   }
-
- 
 }
 
 //inner playlist section list view widget
@@ -458,9 +453,8 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => VideoPlayingPage(
-                            videoPath: playlist[playlistName]![index],
                             fromList: playlist[playlistName]!,
-                            curentIndex: index,
+                            index: index,
                           )));
                 },
                 leading: ClipRRect(

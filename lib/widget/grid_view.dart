@@ -46,9 +46,8 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VideoPlayingPage(
-                                videoPath: allVideosNotify.value[index],
                                 fromList: allVideosNotify.value,
-                                curentIndex: index,
+                                index: index,
                               )));
                     },
                     child: Column(
@@ -93,7 +92,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 child: Text('Add to liked videos',
                                     style: TextStyle(color: allTextColor)),
                                 onTap: () {
-                                  addLikedVideos(
+                                  addLikedVideo(
                                       index, context, allVideosNotify.value);
                                 },
                               ),
@@ -138,9 +137,8 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => VideoPlayingPage(
-                          videoPath: innerFolderData[index],
                           fromList: innerFolderData,
-                          curentIndex: index,
+                          index: index,
                         )));
               },
               child: Column(
@@ -185,7 +183,7 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                           child: Text('Add to liked videos',
                               style: TextStyle(color: allTextColor)),
                           onTap: () {
-                            addLikedVideos(index, context, innerFolderData);
+                            addLikedVideo(index, context, innerFolderData);
                           },
                         ),
                         PopupMenuItem(
@@ -306,9 +304,8 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VideoPlayingPage(
-                                videoPath: likedVideoNotify.value[index],
                                 fromList: likedVideoNotify.value,
-                                curentIndex: index,
+                                index: index,
                               )));
                     },
                     child: Column(
@@ -516,9 +513,8 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VideoPlayingPage(
-                                videoPath: playlist[playlistName]![index],
                                 fromList: playlist[playlistName]!,
-                                curentIndex: index,
+                                index: index,
                               )));
                     },
                     child: Column(
