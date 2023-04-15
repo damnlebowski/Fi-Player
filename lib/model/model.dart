@@ -29,11 +29,3 @@ class LastPlayed extends HiveObject {
 
   LastPlayed({required this.video, required this.position});
 }
-
-// @HiveType(typeId: 4)
-// class IsDarkMode extends HiveObject {
-//   @HiveField(0)
-//   final bool isDarkMode;
-
-//   IsDarkMode({required this.isDarkMode});
-// }

@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, unused_local_variable
-
 import 'dart:developer';
 import 'package:fi_player/model/model.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +46,9 @@ addplaylist(String playlistName) {
 }
 
 //add video to the specific playlist
-addVideoToPlaylist(String playlistName, String videoPath) {
-  playlist[playlistName]!.add('videoPath');
-}
+// addVideoToPlaylist(String playlistName, String videoPath) {
+//   playlist[playlistName]!.add('videoPath');
+// }
 
 //show dialouge playlist and playlist hive
 Future<dynamic> showDialougeOfPlaylist(BuildContext context,
@@ -65,8 +63,10 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
         final playlistController = TextEditingController();
         return Center(
             child: SizedBox(
-          height: 400,
-          width: 350,
+          // height: 400,
+          // width: 350,
+          height: MediaQuery.of(context).size.height * .50,
+          width: MediaQuery.of(context).size.height * .40,
           child: Card(
             color: mainBGColor,
             child: Padding(
@@ -94,7 +94,6 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                               playlistName: playlistController.text,
                               videosList: []);
                           playlistBox.add(playlistModel); //hive
-                          print('----${playlistBox.values}-----');
                           addplaylist(playlistController.text);
                         }
                         isListView.notifyListeners();
@@ -107,7 +106,7 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                             ? Center(
                                 child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: const [
                                   Icon(
                                     Icons.mood_bad_sharp,
                                     color: Colors.purple,
@@ -125,6 +124,7 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                                 physics: BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return ListTile(
+                                    tileColor: Colors.purple[100],
                                     onTap: () {
                                       if (!playlist[playlistKey[index]]!
                                           .contains(listFrom[videoIndex])) {
@@ -137,7 +137,6 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                                                 playlist[playlistKey[index]]!);
                                         playlistBox.putAt(
                                             index, playlistModel); //hive
-                                        print('----${playlistBox.values}');
                                         log('Successfully Added To "${playlistKey[index]}"');
                                         snackBarMessage(context,
                                             'Successfully Added To "${playlistKey[index]}"');
@@ -216,21 +215,39 @@ getEverthing() async {
   };
 }
 
+//reset all
+resetEverthing() async {
+  final likedBox = Hive.box<LikedVideo>('liked_video');
+  final playlistBox = Hive.box<PlayList>('playlist_video');
+  final lastPlayedBox = Hive.box<LastPlayed>('last_played');
+  likedBox.clear();
+  playlistBox.clear();
+  lastPlayedBox.clear();
+  likedVideoNotify.value.clear();
+  playlist.clear();
+  playlistKey.clear();
+  likedVideoNotify.notifyListeners();
+  isListView.notifyListeners();
+}
+
 //add Liked Videos
 
-void addLikedVideo(
-    int index, BuildContext context, List<String> fromList) async {
-  if (!likedVideoNotify.value.contains(fromList[index])) {
-    final likedModel = LikedVideo(video: fromList[index]);
+void addLikedVideo(BuildContext context, String video) async {
+  if (!likedVideoNotify.value.contains(video)) {
+    final likedModel = LikedVideo(video: video);
     final likedBox = Hive.box<LikedVideo>('liked_video');
     await likedBox.add(likedModel);
-    likedVideoNotify.value.add(fromList[index]);
+    likedVideoNotify.value.add(video);
 
     log('Successfully added to liked videos');
     snackBarMessage(context, 'Successfully Added To Liked Videos');
+    likedVideoNotify.notifyListeners();
+
+    return;
   } else {
     log('already contains');
     snackBarMessage(context, 'Already Contains');
+    return;
   }
 }
 
@@ -240,9 +257,10 @@ void removeLikedVideo(int index, BuildContext context) {
   final likedBox = Hive.box<LikedVideo>('liked_video');
   likedVideoNotify.value.removeAt(index);
   likedBox.deleteAt(index);
-  isListView.notifyListeners();
+  likedVideoNotify.notifyListeners();
   log('Removed From Liked');
   snackBarMessage(context, 'Removed From Liked');
+  return;
 }
 
 //video duration
@@ -294,12 +312,6 @@ void deletePlaylistHive(int index) {
   playlistBox.deleteAt(index);
   playlistKey.removeAt(index);
   isListView.notifyListeners();
-  print('playlist.length');
-  print(playlist.length);
-  print('playlistBox.length');
-  print(playlistBox.length);
-  print('playlistKey.length');
-  print(playlistKey.length);
 }
 
 //rename playlist
@@ -307,14 +319,16 @@ void deletePlaylistHive(int index) {
 void renamePlaylist(int index, BuildContext context) {
   final playlistController = TextEditingController(text: playlistKey[index]);
   Future.delayed(
-    Duration(seconds: 0),
+    const Duration(seconds: 0),
     () => showDialog(
       context: context,
       builder: (context) {
         return Center(
             child: SizedBox(
-          height: 200,
-          width: 300,
+          height: MediaQuery.of(context).size.height * .25,
+          width: MediaQuery.of(context).size.height * .40,
+          // height: 200,
+          // width: 300,
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -323,12 +337,12 @@ void renamePlaylist(int index, BuildContext context) {
                 children: [
                   TextField(
                     autofocus: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Playlist Name',
                         border: OutlineInputBorder()),
                     controller: playlistController,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Row(
@@ -339,7 +353,7 @@ void renamePlaylist(int index, BuildContext context) {
                             playlistController.clear();
                             Navigator.of(context).pop();
                           },
-                          child: Text('cancel')),
+                          child: const Text('cancel')),
                       ElevatedButton(
                           onPressed: () {
                             //playlist hive rename
@@ -364,7 +378,7 @@ void renamePlaylist(int index, BuildContext context) {
                               Navigator.of(context).pop();
                             }
                           },
-                          child: Text('add')),
+                          child: const Text('add')),
                     ],
                   )
                 ],

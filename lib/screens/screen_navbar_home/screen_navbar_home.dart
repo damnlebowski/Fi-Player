@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields, must_be_immutable, prefer_const_constructors_in_immutables
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +21,10 @@ class _NavbarPageState extends State<NavbarPage> {
   int _selectedIndex = 0;
 
   List page = [
-    LocalFolderPage(),
-    AllVideosPage(),
-    LikedVideosPage(),
-    PlaylistPage()
+    const LocalFolderPage(),
+    const AllVideosPage(),
+    const LikedVideosPage(),
+    const PlaylistPage()
   ];
 
   @override
@@ -35,9 +34,9 @@ class _NavbarPageState extends State<NavbarPage> {
         builder: (context, value, child) {
           return Scaffold(
             backgroundColor: mainBGColor,
-            appBar: PreferredSize(
+            appBar: const PreferredSize(
                 preferredSize: Size.fromHeight(70), child: AppBarWidget()),
-            drawer: SafeArea(
+            drawer: const SafeArea(
               child: DrawerWidget(),
             ),
             body: page.elementAt(_selectedIndex),
@@ -49,7 +48,7 @@ class _NavbarPageState extends State<NavbarPage> {
                 showUnselectedLabels: true,
                 currentIndex: _selectedIndex,
                 onTap: onTapIndex,
-                items: [
+                items: const [
                   BottomNavigationBarItem(
                       icon: Icon(Icons.folder), label: 'Local'),
                   BottomNavigationBarItem(
@@ -73,7 +72,7 @@ class _NavbarPageState extends State<NavbarPage> {
                   snackBarMessage(context, 'No Videos Played Yet.');
                 }
               },
-              child: Icon(
+              child: const Icon(
                 Icons.play_circle_outline,
                 size: 35,
               ),

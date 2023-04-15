@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../functions/thumbnail_fetching.dart';
@@ -23,7 +21,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: mainBGColor,
       appBar: AppBar(
-        title: Text('Search'),
+        title: const Text('Search'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -41,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
               },
               controller: searchController,
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Search',
                   labelStyle: TextStyle(color: Colors.purple),
                   border: OutlineInputBorder()),
@@ -53,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
                     ? Center(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Icon(
                             Icons.mood_bad_sharp,
                             color: Colors.purple,
@@ -68,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                         ],
                       ))
                     : ListView.separated(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ListTile(
                             //liked and playlist
@@ -109,7 +107,7 @@ class _SearchPageState extends State<SearchPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             trailing: PopupMenuButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.more_vert,
                                 color: Colors.grey,
                               ),
@@ -119,7 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Text('Add to liked videos',
                                         style: TextStyle(color: allTextColor)),
                                     onTap: () {
-                                      addLikedVideo(index, context, searchList);
+                                      addLikedVideo(context, searchList[index]);
                                     }),
                                 PopupMenuItem(
                                   child: Text('Add to Playlist',

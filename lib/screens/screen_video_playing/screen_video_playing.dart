@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -46,16 +44,15 @@ bool isVisible = true;
 
 class _VideoPlayingPageState extends State<VideoPlayingPage> {
   late VideoPlayerController controller;
-
+  String playingVideoPath = '';
   @override
   void initState() {
-    log('${widget.seekFrom}');
     // TODO: implement initState
     super.initState();
-    controller = VideoPlayerController.file(File(widget.fromList[widget.index]))
-      ..addListener(
-        () => setState(() {}),
-      )
+    //..................................kodukanam
+    playingVideoPath = widget.fromList[widget.index];
+    controller = VideoPlayerController.file(File(playingVideoPath))
+      ..addListener(() => setState(() {}))
       ..setLooping(true)
       ..initialize().then((_) {
         controller.seekTo(Duration(seconds: widget.seekFrom));
@@ -93,8 +90,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
   storeLastPlayed() async {
     final lastPlayedBox = Hive.box<LastPlayed>('last_played');
     final lastPlayedModel = LastPlayed(
-        video: widget.fromList[widget.index],
-        position: controller.value.position.inSeconds);
+        video: playingVideoPath, position: controller.value.position.inSeconds);
     await lastPlayedBox.clear();
     await lastPlayedBox.add(lastPlayedModel);
   }
@@ -110,9 +106,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isMuted = controller.value.volume == 0;
-    // bool skipPluse = true;
-    // bool skipMinus = false;
     return Scaffold(
       body: Container(
           color: Colors.black,
@@ -123,7 +116,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                     setState(() {
                       if (isVisible == false) {
                         isVisible = true;
-                        Future.delayed(Duration(seconds: 3))
+                        Future.delayed(const Duration(seconds: 3))
                             .then((_) => isVisible = false);
                       } else {
                         isVisible = false;
@@ -134,7 +127,9 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                     Center(
                       child: AspectRatio(
                           aspectRatio: controller.value.aspectRatio,
-                          child: VideoPlayer(controller)),
+                          child: Stack(
+                            children: [VideoPlayer(controller)],
+                          )),
                     ),
                     Positioned(
                       top: 0,
@@ -151,11 +146,24 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                       bottom: 120,
                       width: 160,
                       child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (isVisible == false) {
+                              isVisible = true;
+                              Future.delayed(const Duration(seconds: 3))
+                                  .then((_) => isVisible = false);
+                            } else {
+                              isVisible = false;
+                            }
+                          });
+                        },
                         onDoubleTap: () {
                           controller.seekTo(controller.value.position -
-                              Duration(seconds: 10));
+                              const Duration(seconds: 10));
                         },
-                        child: Container(),
+                        child: Container(
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
                     Positioned(
@@ -164,12 +172,25 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                       bottom: 120,
                       width: 160,
                       child: InkWell(
+                        onTap: () {
+                          setState(() {//000000000000000000
+                            if (isVisible == false) {
+                              isVisible = true;
+                              Future.delayed(const Duration(seconds: 3))
+                                  .then((_) => isVisible = false);
+                            } else {
+                              isVisible = false;
+                            }
+                          });
+                        },
                         onDoubleTap: () {
                           controller.seekTo(controller.value.position +
-                              Duration(seconds: 10));
+                              const Duration(seconds: 10));
                           setState(() {});
                         },
-                        child: Container(),
+                        child: Container(
+                          color: Colors.amber,
+                        ),
                       ),
                     ),
                     Positioned(
@@ -183,7 +204,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                     )
                   ]),
                 )
-              : Center(
+              : const Center(
                   child: SizedBox(
                       height: 200,
                       child: Center(child: CircularProgressIndicator())),
@@ -201,39 +222,21 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.purple,
               )),
-          Spacer(),
-          IconButton(
-              onPressed: () {
-                if (!likedVideoNotify.value
-                    .contains(widget.fromList[widget.index])) {
-                  addLikedVideo(widget.index, context, widget.fromList);
-                } else {
-                  removeLikedVideo(
-                      likedVideoNotify.value
-                          .indexOf(widget.fromList[widget.index]),
-                      context);
-                }
-                setState(() {});
-              },
-              icon: Icon(
-                likedVideoNotify.value.contains(widget.fromList[widget.index])
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: Colors.purple,
-              )),
+          const Spacer(),
+          FavIconWidget(video: playingVideoPath),
           PopupMenuButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
               color: Colors.purple,
             ),
             color: Colors.black.withOpacity(.5),
             itemBuilder: (context) => [
               PopupMenuItem(
-                child: Text(
+                child: const Text(
                   '0.25x',
                   style: TextStyle(color: Colors.purple),
                 ),
@@ -242,7 +245,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                 },
               ),
               PopupMenuItem(
-                child: Text(
+                child: const Text(
                   '0.50x',
                   style: TextStyle(color: Colors.purple),
                 ),
@@ -251,7 +254,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                 },
               ),
               PopupMenuItem(
-                child: Text(
+                child: const Text(
                   '1.00x',
                   style: TextStyle(color: Colors.purple),
                 ),
@@ -260,7 +263,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                 },
               ),
               PopupMenuItem(
-                child: Text(
+                child: const Text(
                   '1.25x',
                   style: TextStyle(color: Colors.purple),
                 ),
@@ -269,7 +272,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                 },
               ),
               PopupMenuItem(
-                child: Text(
+                child: const Text(
                   '1.50x',
                   style: TextStyle(color: Colors.purple),
                 ),
@@ -290,7 +293,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
       color: Colors.black.withOpacity(.5),
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Row(
@@ -300,11 +303,11 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
               Text(
                 convertMillisecondsToTime(
                     controller.value.duration.inMilliseconds),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -325,7 +328,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                     color: Colors.purple,
                   )),
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.skip_previous,
                   color: Colors.purple,
                 ),
@@ -333,14 +336,16 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                   if (widget.index > 0) {
                     widget.index--;
                     controller.pause();
-                    controller = VideoPlayerController.file(
-                        File(widget.fromList[widget.index]))
-                      ..initialize().then((_) {
-                        setState(() {
-                          setPlayingOrientation();
-                        });
-                        controller.play();
-                      });
+                    //..................................kodukanam
+                    playingVideoPath = widget.fromList[widget.index];
+                    controller =
+                        VideoPlayerController.file(File(playingVideoPath))
+                          ..initialize().then((_) {
+                            setState(() {
+                              setPlayingOrientation();
+                            });
+                            controller.play();
+                          });
                   }
                 },
               ),
@@ -359,23 +364,23 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                 },
               ),
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.skip_next,
                   color: Colors.purple,
                 ),
                 onPressed: () {
-                  log('${widget.fromList[widget.index]}');
                   if (widget.index < widget.fromList.length - 1) {
                     widget.index++;
-                    log('${widget.fromList[widget.index]}');
                     controller.pause();
-                    controller = VideoPlayerController.file(
-                        File(widget.fromList[widget.index]))
-                      ..initialize().then((_) {
-                        setState(() {
-                          setPlayingOrientation();
-                        });
-                      });
+                    //..................................kodukanam
+                    playingVideoPath = widget.fromList[widget.index];
+                    controller =
+                        VideoPlayerController.file(File(playingVideoPath))
+                          ..initialize().then((_) {
+                            setState(() {
+                              setPlayingOrientation();
+                            });
+                          });
 
                     controller.play();
                   }
@@ -389,7 +394,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                       setPotrait();
                     }
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.screen_rotation,
                     color: Colors.purple,
                   )),
@@ -409,6 +414,38 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
               playedColor: Colors.purple, backgroundColor: Colors.purple[100]!),
         ),
       );
+}
+
+class FavIconWidget extends StatefulWidget {
+  FavIconWidget({super.key, required this.video});
+  String video;
+
+  @override
+  State<FavIconWidget> createState() => _FavIconWidgetState();
+}
+
+class _FavIconWidgetState extends State<FavIconWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          setState(() {
+            if (!likedVideoNotify.value.contains(widget.video)) {
+              addLikedVideo(context, widget.video);
+            } else {
+              removeLikedVideo(
+                  likedVideoNotify.value.indexOf(widget.video), context);
+              return;
+            }
+          });
+        },
+        icon: Icon(
+          likedVideoNotify.value.contains(widget.video)
+              ? Icons.favorite
+              : Icons.favorite_border,
+          color: Colors.purple,
+        ));
+  }
 }
 
 class videoDuration extends StatefulWidget {
@@ -440,12 +477,12 @@ class _videoDurationState extends State<videoDuration> {
   Widget build(BuildContext context) {
     return Text(
       _position,
-      style: TextStyle(color: Colors.white, fontSize: 15),
+      style: const TextStyle(color: Colors.white, fontSize: 15),
     );
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       final duration = Duration(
           milliseconds:
               widget.controller.value.position.inMilliseconds.round());

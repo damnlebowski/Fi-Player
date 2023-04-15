@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import '../../widget/drawer.dart';
 
@@ -11,7 +9,7 @@ class HelpScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: mainBGColor,
         appBar: AppBar(
-          title: Text('Help'),
+          title: const Text('Help'),
         ),
         body: SingleChildScrollView(
           child: Padding(

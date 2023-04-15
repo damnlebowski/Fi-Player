@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import '../../widget/drawer.dart';
@@ -11,7 +10,7 @@ class PrivacyPolicy extends StatelessWidget {
     return Scaffold(
         backgroundColor: mainBGColor,
         appBar: AppBar(
-          title: Text('Privacy Policy'),
+          title: const Text('Privacy Policy'),
         ),
         body: SingleChildScrollView(
           child: Padding(

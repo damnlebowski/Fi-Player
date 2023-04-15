@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, avoid_print, prefer_const_literals_to_create_immutables
 import 'dart:developer';
 import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_video_folder.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
@@ -19,7 +18,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -37,8 +36,8 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               itemCount: allVideosNotify.value.length,
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -83,7 +82,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: PopupMenuButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.more_vert,
                               color: Colors.grey,
                             ),
@@ -93,8 +92,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 child: Text('Add to liked videos',
                                     style: TextStyle(color: allTextColor)),
                                 onTap: () {
-                                  addLikedVideo(
-                                      index, context, allVideosNotify.value);
+                                  addLikedVideo(context, allVideosNotify.value[index]);
                                 },
                               ),
                               PopupMenuItem(
@@ -129,8 +127,8 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: GridView.builder(
         itemCount: innerFolderData.length,
-        physics: BouncingScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        physics: const BouncingScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
         itemBuilder: (context, index) {
           return InkWell(
@@ -162,7 +160,7 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                             bottom: 5,
                             right: 5,
                             child: VideoDuration(
-                              videoPath: allVideosNotify.value[index],
+                              videoPath: innerFolderData[index],
                             ))
                       ],
                     ),
@@ -175,7 +173,7 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     trailing: PopupMenuButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.more_vert,
                         color: Colors.grey,
                       ),
@@ -185,7 +183,7 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
                           child: Text('Add to liked videos',
                               style: TextStyle(color: allTextColor)),
                           onTap: () {
-                            addLikedVideo(index, context, innerFolderData);
+                            addLikedVideo(context, innerFolderData[index]);
                           },
                         ),
                         PopupMenuItem(
@@ -217,7 +215,7 @@ class GridViewWidgetForFolders extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -235,8 +233,8 @@ class GridViewWidgetForFolders extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               itemCount: allFolders.length,
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -250,7 +248,7 @@ class GridViewWidgetForFolders extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.folder_rounded,
                           size: 70,
                           color: Colors.purple,
@@ -279,7 +277,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -297,8 +295,8 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               itemCount: likedVideoNotify.value.length,
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -330,7 +328,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
                                   bottom: 5,
                                   right: 5,
                                   child: VideoDuration(
-                                    videoPath: allVideosNotify.value[index],
+                                    videoPath: likedVideoNotify.value[index],
                                   ))
                             ],
                           ),
@@ -343,7 +341,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: PopupMenuButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.more_vert,
                               color: Colors.grey,
                             ),
@@ -355,7 +353,6 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
                                 onTap: () {
                                   likedVideoNotify.value
                                       .remove(likedVideoNotify.value[index]);
-                                  // likedVideoNotify.notifyListeners();
                                   isListView.notifyListeners();
                                 },
                               ),
@@ -381,7 +378,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
 
 //playlist section list view widget
 class GridViewWidgetForPlaylist extends StatelessWidget {
-  GridViewWidgetForPlaylist({super.key});
+  const GridViewWidgetForPlaylist({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -389,7 +386,7 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -407,8 +404,8 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               itemCount: playlistKey.length,
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -422,19 +419,19 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.all(
-                              color: Color.fromARGB(255, 197, 195, 195))),
+                              color: const Color.fromARGB(255, 197, 195, 195))),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.playlist_play,
                             color: Colors.purple,
                             size: 60,
                           ),
                           Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 15,
                               ),
                               Text(
@@ -443,9 +440,9 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Spacer(),
+                              const Spacer(),
                               PopupMenuButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.more_vert,
                                   color: Colors.grey,
                                 ),
@@ -489,7 +486,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -507,8 +504,8 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
               itemCount: playlist[playlistName]?.length ?? 0,
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
@@ -540,7 +537,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                                   bottom: 5,
                                   right: 5,
                                   child: VideoDuration(
-                                    videoPath: allVideosNotify.value[index],
+                                    videoPath: playlist[playlistName]![index],
                                   ))
                             ],
                           ),
@@ -553,7 +550,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: PopupMenuButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.more_vert,
                               color: Colors.grey,
                             ),

@@ -1,17 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
-// import 'package:flutter/material.dart';
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'dart:async';
-
-// void main() async {
-// WidgetsFlutterBinding.ensureInitialized();
-// FetchAllVideos ob = FetchAllVideos();
-// List videos = await ob.getAllVideos();
-// log("videos.lenght ${videos.length}");
-// }
 
 class FetchAllVideos {
   List<String> videosDirectories = [];

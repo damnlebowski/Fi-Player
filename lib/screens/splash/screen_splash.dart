@@ -1,6 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, annotate_overrides
 
-import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../functions/video_fetching.dart';
@@ -30,11 +28,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   wait() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     FetchAllVideos ob = FetchAllVideos();
     List<String> allVideos = await ob.getAllVideos();
     allVideosNotify.value.addAll(allVideos);
-    // await getAllThumbnail(allVideosNotify.value);
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => NavbarPage(),

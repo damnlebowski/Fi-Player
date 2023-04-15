@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -17,7 +15,10 @@ class AllVideosPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: mainBGColor,
             body: isListView.value == true
-                ? ListViewWidgetForAllVideos()
+                ? const Padding(
+                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                    child: ListViewWidgetForAllVideos(),
+                  )
                 : GridViewWidgetForAllVideos(),
           );
         });

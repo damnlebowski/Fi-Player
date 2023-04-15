@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
-
 import 'dart:developer';
 import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_video_folder.dart';
@@ -12,7 +10,7 @@ import 'drawer.dart';
 
 //all videos section list view widget
 class ListViewWidgetForAllVideos extends StatelessWidget {
-  ListViewWidgetForAllVideos({super.key});
+  const ListViewWidgetForAllVideos({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -35,7 +33,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
             ],
           ))
         : ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
@@ -73,7 +71,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: PopupMenuButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.more_vert,
                     color: Colors.grey,
                   ),
@@ -83,7 +81,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
                         child: Text('Add to liked videos',
                             style: TextStyle(color: allTextColor)),
                         onTap: () {
-                          addLikedVideo(index, context, allVideosNotify.value);
+                          addLikedVideo(context, allVideosNotify.value[index]);
                         }),
                     PopupMenuItem(
                       child: Text('Add to Playlist',
@@ -108,7 +106,7 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
 
 //all folders section list view widget
 class ListViewWidgetForFolders extends StatelessWidget {
-  ListViewWidgetForFolders({super.key});
+  const ListViewWidgetForFolders({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +114,7 @@ class ListViewWidgetForFolders extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -131,7 +129,7 @@ class ListViewWidgetForFolders extends StatelessWidget {
             ],
           ))
         : ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
@@ -140,7 +138,7 @@ class ListViewWidgetForFolders extends StatelessWidget {
                         FolderInnerPage(folderAddress: allFolders[index]),
                   ));
                 },
-                leading: Icon(
+                leading: const Icon(
                   Icons.folder_rounded,
                   size: 70,
                   color: Colors.purple,
@@ -170,7 +168,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return ListTile(
             //liked and playlist
@@ -196,7 +194,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
                       bottom: 5,
                       right: 5,
                       child: VideoDuration(
-                        videoPath: allVideosNotify.value[index],
+                        videoPath: innerFolderData[index],
                       ))
                 ],
               ),
@@ -208,7 +206,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             trailing: PopupMenuButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.more_vert,
                 color: Colors.grey,
               ),
@@ -218,7 +216,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
                     child: Text('Add to liked videos',
                         style: TextStyle(color: allTextColor)),
                     onTap: () {
-                      addLikedVideo(index, context, innerFolderData);
+                      addLikedVideo(context, innerFolderData[index]);
                     }),
                 PopupMenuItem(
                   child: Text('Add to Playlist',
@@ -243,7 +241,7 @@ class ListViewWidgetForInnerVideos extends StatelessWidget {
 
 //liked videos section list view widget
 class ListViewWidgetForLikedVideos extends StatelessWidget {
-  ListViewWidgetForLikedVideos({super.key});
+  const ListViewWidgetForLikedVideos({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +249,7 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -265,83 +263,84 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
               ),
             ],
           ))
-        : ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => VideoPlayingPage(
-                            fromList: likedVideoNotify.value,
-                            index: index,
-                            seekFrom: 0,
-                          )));
-                },
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(7),
-                  child: Stack(
-                    children: [
-                      Container(
-                        color: Colors.black,
-                        height: 95,
-                        width: 100,
-                        child: ThumbnailWidget(
-                            videoPath: likedVideoNotify.value[index]),
+        : ValueListenableBuilder(
+            valueListenable: likedVideoNotify,
+            builder: (context, values, child) => ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => VideoPlayingPage(
+                                fromList: values,
+                                index: index,
+                                seekFrom: 0,
+                              )));
+                    },
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(7),
+                      child: Stack(
+                        children: [
+                          Container(
+                            color: Colors.black,
+                            height: 95,
+                            width: 100,
+                            child: ThumbnailWidget(videoPath: values[index]),
+                          ),
+                          Positioned(
+                              bottom: 5,
+                              right: 5,
+                              child: VideoDuration(
+                                videoPath: values[index],
+                              ))
+                        ],
                       ),
-                      Positioned(
-                          bottom: 5,
-                          right: 5,
-                          child: VideoDuration(
-                            videoPath: allVideosNotify.value[index],
-                          ))
-                    ],
-                  ),
-                ),
-                title: Text(
-                  getVideoName(likedVideoNotify.value[index]),
-                  style: TextStyle(color: allTextColor),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                trailing: PopupMenuButton(
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Colors.grey,
-                  ),
-                  color: mainBGColor,
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Text('Remove liked videos',
-                          style: TextStyle(color: allTextColor)),
-                      onTap: () {
-                        removeLikedVideo(index, context);
-                      },
                     ),
-                    PopupMenuItem(
-                      child: Text('Add to Playlist',
-                          style: TextStyle(color: allTextColor)),
-                      onTap: () {
-                        showDialougeOfPlaylist(context,
-                            videoIndex: index,
-                            listFrom: likedVideoNotify.value);
-                      },
-                    )
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                color: allTextColor,
-              );
-            },
-            itemCount: likedVideoNotify.value.length);
+                    title: Text(
+                      getVideoName(values[index]),
+                      style: TextStyle(color: allTextColor),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: PopupMenuButton(
+                      icon: const Icon(
+                        Icons.more_vert,
+                        color: Colors.grey,
+                      ),
+                      color: mainBGColor,
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text('Remove liked videos',
+                              style: TextStyle(color: allTextColor)),
+                          onTap: () {
+                            removeLikedVideo(index, context);
+                          },
+                        ),
+                        PopupMenuItem(
+                          child: Text('Add to Playlist',
+                              style: TextStyle(color: allTextColor)),
+                          onTap: () {
+                            showDialougeOfPlaylist(context,
+                                videoIndex: index, listFrom: values);
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    color: allTextColor,
+                  );
+                },
+                itemCount: values.length),
+          );
   }
 }
 
 //playlist section list view widget
 class ListViewWidgetForPlaylist extends StatelessWidget {
-  ListViewWidgetForPlaylist({super.key});
+  const ListViewWidgetForPlaylist({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -349,7 +348,7 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -364,7 +363,7 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
             ],
           ))
         : ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {
@@ -373,7 +372,7 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
                             playlistIndex: index,
                           )));
                 },
-                leading: Icon(
+                leading: const Icon(
                   Icons.playlist_play,
                   color: Colors.purple,
                   size: 60,
@@ -385,7 +384,7 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: PopupMenuButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.more_vert,
                     color: Colors.grey,
                   ),
@@ -395,7 +394,6 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
                         child: Text('Rename Playlist',
                             style: TextStyle(color: allTextColor)),
                         onTap: () {
-                          //.....................................................................................................
                           renamePlaylist(index, context);
                         }),
                     PopupMenuItem(
@@ -432,7 +430,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
@@ -447,7 +445,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
             ],
           ))
         : ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               return ListTile(
                 //liked and playlist
@@ -474,7 +472,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                           bottom: 5,
                           right: 5,
                           child: VideoDuration(
-                            videoPath: allVideosNotify.value[index],
+                            videoPath: playlist[playlistName]![index],
                           ))
                     ],
                   ),
@@ -486,7 +484,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: PopupMenuButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.more_vert,
                     color: Colors.grey,
                   ),

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/model/model.dart';
 import 'package:fi_player/widget/grid_view.dart';
@@ -31,8 +29,10 @@ class PlaylistPage extends StatelessWidget {
                           builder: (context) {
                             return Center(
                                 child: SizedBox(
-                              height: 200,
-                              width: 300,
+                              // height: 200,
+                              height: MediaQuery.of(context).size.height * .25,
+                              width: MediaQuery.of(context).size.height * .40,
+                              // width: 300,
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(15),
@@ -41,12 +41,12 @@ class PlaylistPage extends StatelessWidget {
                                     children: [
                                       TextField(
                                         autofocus: true,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                             labelText: 'Playlist Name',
                                             border: OutlineInputBorder()),
                                         controller: playlistController,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 30,
                                       ),
                                       Row(
@@ -58,7 +58,7 @@ class PlaylistPage extends StatelessWidget {
                                                 playlistController.clear();
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text('cancel')),
+                                              child: const Text('cancel')),
                                           ElevatedButton(
                                               onPressed: () {
                                                 if (playlistController.text
@@ -78,15 +78,12 @@ class PlaylistPage extends StatelessWidget {
                                                   addplaylist(playlistController
                                                       .text
                                                       .trim());
-                                                  print(
-                                                      '----${playlistBox.values}-----');
                                                   isListView.notifyListeners();
                                                   playlistController.clear();
-
                                                   Navigator.of(context).pop();
                                                 }
                                               },
-                                              child: Text('add')),
+                                              child: const Text('add')),
                                         ],
                                       )
                                     ],
@@ -97,14 +94,14 @@ class PlaylistPage extends StatelessWidget {
                           },
                         );
                       },
-                      child: Text('Add Playlist')),
-                  Divider(
+                      child: const Text('Add Playlist')),
+                  const Divider(
                     height: 5,
                   ),
                   Expanded(
                     child: isListView.value == true
-                        ? ListViewWidgetForPlaylist()
-                        : GridViewWidgetForPlaylist(),
+                        ? const ListViewWidgetForPlaylist()
+                        : const GridViewWidgetForPlaylist(),
                   ),
                 ],
               ));

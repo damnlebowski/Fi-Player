@@ -1,7 +1,4 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:fi_player/functions/all_functions.dart';
-import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -20,11 +17,14 @@ class FolderInnerPage extends StatelessWidget {
         builder: (context, value, child) {
           return Scaffold(
               backgroundColor: mainBGColor,
-              appBar: PreferredSize(
-                  child: AppBarWidget(), preferredSize: Size.fromHeight(70)),
+              appBar: const PreferredSize(
+                  preferredSize: Size.fromHeight(70), child: AppBarWidget()),
               body: isListView.value == true
-                  ? ListViewWidgetForInnerVideos(
-                      innerFolderData: innerFolderData,
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ListViewWidgetForInnerVideos(
+                        innerFolderData: innerFolderData,
+                      ),
                     )
                   : GridViewWidgetForInnerVideos(
                       innerFolderData: innerFolderData));

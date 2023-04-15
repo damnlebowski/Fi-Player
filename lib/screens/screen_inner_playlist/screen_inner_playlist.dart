@@ -1,4 +1,3 @@
-import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../widget/appbar.dart';
@@ -16,11 +15,14 @@ class PlaylistInsidePage extends StatelessWidget {
         builder: (context, value, child) {
           return Scaffold(
               backgroundColor: mainBGColor,
-              appBar: PreferredSize(
-                  child: AppBarWidget(), preferredSize: Size.fromHeight(70)),
+              appBar: const PreferredSize(
+                  preferredSize: Size.fromHeight(70), child: AppBarWidget()),
               body: isListView.value == true
-                  ? ListViewWidgetForInnerPlaylist(
-                      playlistName: playlistKey[playlistIndex],
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: ListViewWidgetForInnerPlaylist(
+                        playlistName: playlistKey[playlistIndex],
+                      ),
                     )
                   : GridViewWidgetForInnerPlaylist(
                       playlistName: playlistKey[playlistIndex],

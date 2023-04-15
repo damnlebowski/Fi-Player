@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +32,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             height: 200,
             child: Image.asset('assets/FI_PLAYER.png'),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ListTile(
-            leading: Icon(Icons.dark_mode_outlined, color: Colors.purple),
+            leading: const Icon(Icons.dark_mode_outlined, color: Colors.purple),
             title: Text(
               'Dark Theme',
               style: TextStyle(color: allTextColor),
@@ -53,7 +51,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       isListView.notifyListeners();
                     } else {
                       isDarkMode.value = true;
-                      mainBGColor = Color.fromARGB(255, 43, 7, 48);
+                      mainBGColor = const Color.fromARGB(255, 43, 7, 48);
                       allTextColor = Colors.white;
                       bottomNavColor = Colors.black;
                       isListView.notifyListeners();
@@ -63,9 +61,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => StettingsScreen(),
+              builder: (context) => const StettingsScreen(),
             )),
-            leading: Icon(Icons.settings_applications, color: Colors.purple),
+            leading:
+                const Icon(Icons.settings_applications, color: Colors.purple),
             title: Text(
               'Settings',
               style: TextStyle(color: allTextColor),
@@ -73,14 +72,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => HelpScreen(),
+              builder: (context) => const HelpScreen(),
             )),
-            leading: Icon(Icons.help_center_outlined, color: Colors.purple),
+            leading:
+                const Icon(Icons.help_center_outlined, color: Colors.purple),
             title: Text(
               'Help',
               style: TextStyle(color: allTextColor),
             ),
           ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.share, color: Colors.purple),
+            title: Text(
+              'Share Fi Player',
+              style: TextStyle(color: allTextColor),
+            ),
+          )
         ]);
   }
 }

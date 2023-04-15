@@ -9,11 +9,11 @@ class TermsAndConditionsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: mainBGColor,
       appBar: AppBar(
-        title: Text('Terms And Conditions'),
+        title: const Text('Terms And Conditions'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Text('''Terms and Conditions for Video Player:
 
 These terms and conditions ("Agreement") govern your use of the video player ("Player") provided by us. By using the Player, you agree to be bound by this Agreement. If you do not agree to this Agreement, you may not use the Player.

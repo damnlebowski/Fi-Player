@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -20,8 +19,8 @@ class ThumbnailWidget extends StatelessWidget {
                 File(snapshot.data!),
                 fit: BoxFit.contain,
               )
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(25, 15, 25, 15),
+            : const Padding(
+                padding: EdgeInsets.fromLTRB(25, 15, 25, 15),
                 child: Center(
                   child: Text(
                     'Loading...',
