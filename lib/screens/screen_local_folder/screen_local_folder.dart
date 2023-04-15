@@ -17,7 +17,7 @@ class LocalFolderPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: mainBGColor,
             body: isListView.value == true
-                ? ListViewWidgetForFolders()
+                ? const ListViewWidgetForFolders()
                 : GridViewWidgetForFolders(),
           );
         });

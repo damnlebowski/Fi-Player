@@ -45,10 +45,6 @@ addplaylist(String playlistName) {
   playlistKey.add(playlistName);
 }
 
-//add video to the specific playlist
-// addVideoToPlaylist(String playlistName, String videoPath) {
-//   playlist[playlistName]!.add('videoPath');
-// }
 
 //show dialouge playlist and playlist hive
 Future<dynamic> showDialougeOfPlaylist(BuildContext context,
@@ -75,13 +71,13 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                 children: [
                   TextField(
                     controller: playlistController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Playlist Name',
                         labelStyle: TextStyle(color: Colors.purple),
                         border: OutlineInputBorder()),
                     style: TextStyle(color: allTextColor),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
@@ -98,7 +94,7 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                         }
                         isListView.notifyListeners();
                       },
-                      child: Text('add')),
+                      child: const Text('add')),
                   Expanded(
                     child: ValueListenableBuilder(
                         valueListenable: isListView,
@@ -121,7 +117,7 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                                 ],
                               ))
                             : ListView.separated(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   return ListTile(
                                     tileColor: Colors.purple[100],
@@ -147,7 +143,7 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                                       }
                                       Navigator.of(context).pop();
                                     },
-                                    leading: Icon(
+                                    leading: const Icon(
                                       Icons.playlist_play,
                                       color: Colors.purple,
                                       size: 60,
@@ -182,10 +178,10 @@ void snackBarMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(SnackBar(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       content: Text(
         message,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.purple[100],
@@ -275,11 +271,11 @@ class VideoDuration extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.hasData) {
           return Text(snapshot.data!,
-              style: TextStyle(
+              style: const TextStyle(
                   backgroundColor: Colors.black, color: Colors.white));
         } else {
           return Text('Error: ${snapshot.error}',
-              style: TextStyle(
+              style: const TextStyle(
                   backgroundColor: Colors.black, color: Colors.white));
         }
       },

@@ -173,7 +173,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                       width: 160,
                       child: InkWell(
                         onTap: () {
-                          setState(() {//000000000000000000
+                          setState(() {
                             if (isVisible == false) {
                               isVisible = true;
                               Future.delayed(const Duration(seconds: 3))
@@ -497,46 +497,3 @@ class _videoDurationState extends State<videoDuration> {
     _timer?.cancel();
   }
 }
-
-// class videoDuration extends StatefulWidget {
-//   videoDuration({super.key, required this.controller});
-//   VideoPlayerController controller;
-
-//   @override
-//   State<videoDuration> createState() => _videoDurationState();
-// }
-
-// class _videoDurationState extends State<videoDuration> {
-//   String _position = '';
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     widget.controller.addListener(_updatePosition);
-//   }
-
-//   @override
-//   void dispose() {
-//     widget.controller.removeListener(_updatePosition);
-//     super.dispose();
-//   }
-
-//   void _updatePosition() {
-//     final duration = Duration(
-//         milliseconds: widget.controller.value.position.inMilliseconds.round());
-//     final position = [duration.inMinutes, duration.inSeconds]
-//         .map((e) => e.remainder(60).toString().padLeft(2, '0'))
-//         .join(':');
-//     setState(() {
-//       _position = position;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Text(
-//       _position,
-//       style: TextStyle(color: Colors.white, fontSize: 15),
-//     );
-//   }
-// }
