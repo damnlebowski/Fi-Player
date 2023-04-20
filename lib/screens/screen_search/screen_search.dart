@@ -51,17 +51,17 @@ class _SearchPageState extends State<SearchPage> {
                     ? Center(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.mood_bad_sharp,
                             color: Colors.purple,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
                             'There Is No Videos',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 20, color: allTextColor),
                           ),
                         ],
                       ))

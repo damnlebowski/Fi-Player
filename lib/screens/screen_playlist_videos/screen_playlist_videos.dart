@@ -17,94 +17,96 @@ class PlaylistPage extends StatelessWidget {
         valueListenable: isListView,
         builder: (context, value, child) {
           return Scaffold(
-              backgroundColor: mainBGColor,
-              body: Column(
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        final playlistBox =
-                            Hive.box<PlayList>('playlist_video'); //hive
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Center(
-                                child: SizedBox(
-                              // height: 200,
-                              height: MediaQuery.of(context).size.height * .25,
-                              width: MediaQuery.of(context).size.height * .40,
-                              // width: 300,
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextField(
-                                        autofocus: true,
-                                        decoration: const InputDecoration(
-                                            labelText: 'Playlist Name',
-                                            border: OutlineInputBorder()),
-                                        controller: playlistController,
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          ElevatedButton(
-                                              onPressed: () {
+            backgroundColor: mainBGColor,
+            body: Column(
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      final playlistBox =
+                          Hive.box<PlayList>('playlist_video'); //hive
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Center(
+                              child: Container(
+                            color: mainBGColor,
+                            height: MediaQuery.of(context).size.height * .25,
+                            width: MediaQuery.of(context).size.height * .40,
+                            child: Card(
+                              color: mainBGColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextField(
+                                      autofocus: true,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Playlist Name',
+                                          border: OutlineInputBorder()),
+                                      controller: playlistController,
+                                      style: TextStyle(color: allTextColor),
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              playlistController.clear();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('cancel')),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              if (playlistController.text
+                                                          .trim() !=
+                                                      '' &&
+                                                  !playlistKey.contains(
+                                                      playlistController.text
+                                                          .trim())) {
+                                                final playlistModel = PlayList(
+                                                    playlistName:
+                                                        playlistController.text,
+                                                    videosList: []);
+                                                playlistBox
+                                                    .add(playlistModel); //hive
+                                                addplaylist(playlistController
+                                                    .text
+                                                    .trim());
+
                                                 playlistController.clear();
                                                 Navigator.of(context).pop();
-                                              },
-                                              child: const Text('cancel')),
-                                          ElevatedButton(
-                                              onPressed: () {
-                                                if (playlistController.text
-                                                            .trim() !=
-                                                        '' &&
-                                                    !playlistKey.contains(
-                                                        playlistController.text
-                                                            .trim())) {
-                                                  final playlistModel =
-                                                      PlayList(
-                                                          playlistName:
-                                                              playlistController
-                                                                  .text,
-                                                          videosList: []);
-                                                  playlistBox.add(
-                                                      playlistModel); //hive
-                                                  addplaylist(playlistController
-                                                      .text
-                                                      .trim());
-                                                  isListView.notifyListeners();
-                                                  playlistController.clear();
-                                                  Navigator.of(context).pop();
-                                                }
-                                              },
-                                              child: const Text('add')),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                                isListView.notifyListeners();
+                                              }
+                                            },
+                                            child: const Text('add')),
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                            ));
-                          },
-                        );
-                      },
-                      child: const Text('Add Playlist')),
-                  const Divider(
-                    height: 5,
-                  ),
-                  Expanded(
-                    child: isListView.value == true
-                        ? const ListViewWidgetForPlaylist()
-                        : const GridViewWidgetForPlaylist(),
-                  ),
-                ],
-              ));
+                            ),
+                          ));
+                        },
+                      );
+                    },
+                    child: const Text('Add Playlist')),
+                const Divider(
+                  height: 5,
+                ),
+                Expanded(
+                  child: isListView.value == true
+                      ? ListViewWidgetForPlaylist()
+                      : GridViewWidgetForPlaylist(),
+                ),
+              ],
+            ),
+            floatingActionButton: ResumeButton(),
+          );
         });
   }
 }

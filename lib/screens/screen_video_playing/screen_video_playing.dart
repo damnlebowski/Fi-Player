@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/model/model.dart';
+import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -81,7 +82,10 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
     // TODO: implement dispose
 
     storeLastPlayed();
+
     setAllOrientationToDefault();
+    addToPlayedHistory(playingVideoPath, controller.value.position.inSeconds,
+        controller.value.duration.inSeconds);
     controller.dispose();
 
     super.dispose();
@@ -161,9 +165,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                           controller.seekTo(controller.value.position -
                               const Duration(seconds: 10));
                         },
-                        child: Container(
-                          color: Colors.blue,
-                        ),
+                        child: Container(),
                       ),
                     ),
                     Positioned(
@@ -188,9 +190,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                               const Duration(seconds: 10));
                           setState(() {});
                         },
-                        child: Container(
-                          color: Colors.amber,
-                        ),
+                        child: Container(),
                       ),
                     ),
                     Positioned(
@@ -333,18 +333,31 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                   color: Colors.purple,
                 ),
                 onPressed: () {
+                  isVisible = false;
+                  isVisible = true;
                   if (widget.index > 0) {
                     widget.index--;
                     controller.pause();
                     //..................................kodukanam
+                    addToPlayedHistory(
+                        playingVideoPath,
+                        controller.value.position.inSeconds,
+                        controller.value.duration.inSeconds);
                     playingVideoPath = widget.fromList[widget.index];
+                    // controller =
+                    //     VideoPlayerController.file(File(playingVideoPath))
+                    //       ..initialize().then((_) {
+                    //         setState(() {
+                    //           setPlayingOrientation();
+                    //         });
+                    //         controller.play();
+                    //       });
                     controller =
                         VideoPlayerController.file(File(playingVideoPath))
+                          ..addListener(() => setState(() {}))
+                          ..setLooping(true)
                           ..initialize().then((_) {
-                            setState(() {
-                              setPlayingOrientation();
-                            });
-                            controller.play();
+                            setPlayingOrientation();
                           });
                   }
                 },
@@ -369,17 +382,30 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                   color: Colors.purple,
                 ),
                 onPressed: () {
+                  isVisible = false;
+                  isVisible = true;
                   if (widget.index < widget.fromList.length - 1) {
                     widget.index++;
                     controller.pause();
                     //..................................kodukanam
+                    addToPlayedHistory(
+                        playingVideoPath,
+                        controller.value.position.inSeconds,
+                        controller.value.duration.inSeconds);
                     playingVideoPath = widget.fromList[widget.index];
+                    // controller =
+                    //     VideoPlayerController.file(File(playingVideoPath))
+                    //       ..initialize().then((_) {
+                    //         setState(() {
+                    //           setPlayingOrientation();
+                    //         });
+                    //       });
                     controller =
                         VideoPlayerController.file(File(playingVideoPath))
+                          ..addListener(() => setState(() {}))
+                          ..setLooping(true)
                           ..initialize().then((_) {
-                            setState(() {
-                              setPlayingOrientation();
-                            });
+                            setPlayingOrientation();
                           });
 
                     controller.play();
@@ -432,9 +458,12 @@ class _FavIconWidgetState extends State<FavIconWidget> {
           setState(() {
             if (!likedVideoNotify.value.contains(widget.video)) {
               addLikedVideo(context, widget.video);
+              isListView.notifyListeners();
             } else {
               removeLikedVideo(
                   likedVideoNotify.value.indexOf(widget.video), context);
+              isListView.notifyListeners();
+
               return;
             }
           });

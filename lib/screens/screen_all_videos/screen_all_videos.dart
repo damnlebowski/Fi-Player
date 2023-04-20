@@ -1,3 +1,4 @@
+import 'package:fi_player/functions/all_functions.dart';
 import 'package:flutter/material.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -15,11 +16,12 @@ class AllVideosPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: mainBGColor,
             body: isListView.value == true
-                ? const Padding(
+                ? Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 8),
                     child: ListViewWidgetForAllVideos(),
                   )
                 : GridViewWidgetForAllVideos(),
+            floatingActionButton: ResumeButton(),
           );
         });
   }

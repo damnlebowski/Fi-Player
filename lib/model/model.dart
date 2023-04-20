@@ -19,6 +19,21 @@ class PlayList extends HiveObject {
   PlayList({required this.playlistName, required this.videosList});
 }
 
+@HiveType(typeId: 2)
+class PlayedHistory extends HiveObject {
+  @HiveField(0)
+  final String video;
+
+  @HiveField(1)
+  final int position;
+
+  @HiveField(2)
+  final int duration;
+
+  PlayedHistory(
+      {required this.video, required this.position, required this.duration});
+}
+
 @HiveType(typeId: 3)
 class LastPlayed extends HiveObject {
   @HiveField(0)

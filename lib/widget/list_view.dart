@@ -5,7 +5,9 @@ import 'package:fi_player/screens/screen_inner_playlist/screen_inner_playlist.da
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import '../functions/all_functions.dart';
+import '../model/model.dart';
 import 'drawer.dart';
 
 //all videos section list view widget
@@ -18,17 +20,17 @@ class ListViewWidgetForAllVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'There Is No Videos',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -114,17 +116,17 @@ class ListViewWidgetForFolders extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children:  [
+            const  Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+            const  SizedBox(
                 height: 10,
               ),
               Text(
                 'No Folders',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20,color: allTextColor),
               ),
             ],
           ))
@@ -249,17 +251,17 @@ class ListViewWidgetForLikedVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'No Liked Videos Yet',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -344,21 +346,22 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //.........................................................................................
     return playlistKey.isEmpty
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'Playlist Is Empty',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -404,6 +407,7 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
                             context, 'Removed "${playlistKey[index]}"');
                         log('Playlist "${playlistKey[index]}" Deleted');
                         deletePlaylistHive(index);
+                        // isListView.notifyListeners();
                       },
                     )
                   ],
@@ -421,12 +425,12 @@ class ListViewWidgetForPlaylist extends StatelessWidget {
 
 //inner playlist section list view widget
 class ListViewWidgetForInnerPlaylist extends StatelessWidget {
-  ListViewWidgetForInnerPlaylist({super.key, required this.playlistName});
+  ListViewWidgetForInnerPlaylist({super.key, required this.fromPlaylistName});
 
-  String playlistName;
+  String fromPlaylistName;
   @override
   Widget build(BuildContext context) {
-    return playlist[playlistName]!.isEmpty
+    return playlist[fromPlaylistName]!.isEmpty
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -452,7 +456,7 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => VideoPlayingPage(
-                            fromList: playlist[playlistName]!,
+                            fromList: playlist[fromPlaylistName]!,
                             index: index,
                             seekFrom: 0,
                           )));
@@ -466,19 +470,19 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                         height: 95,
                         width: 100,
                         child: ThumbnailWidget(
-                            videoPath: playlist[playlistName]![index]),
+                            videoPath: playlist[fromPlaylistName]![index]),
                       ),
                       Positioned(
                           bottom: 5,
                           right: 5,
                           child: VideoDuration(
-                            videoPath: playlist[playlistName]![index],
+                            videoPath: playlist[fromPlaylistName]![index],
                           ))
                     ],
                   ),
                 ),
                 title: Text(
-                  getVideoName(playlist[playlistName]![index]),
+                  getVideoName(playlist[fromPlaylistName]![index]),
                   style: TextStyle(color: allTextColor),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -496,11 +500,11 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                         style: TextStyle(color: allTextColor),
                       ),
                       onTap: () {
-                        log('Song Removed From "$playlistName"');
+                        log('video Removed From "$fromPlaylistName"');
                         snackBarMessage(
-                            context, 'Song Removed From "$playlistName"');
-                        playlist[playlistName]!.removeAt(index);
-                        isListView.notifyListeners();
+                            context, 'video Removed From "$fromPlaylistName"');
+
+                        deleteVideoFromPlaylist(index, fromPlaylistName);
                       },
                     )
                   ],
@@ -512,6 +516,6 @@ class ListViewWidgetForInnerPlaylist extends StatelessWidget {
                 color: allTextColor,
               );
             },
-            itemCount: playlist[playlistName]?.length ?? 0);
+            itemCount: playlist[fromPlaylistName]?.length ?? 0);
   }
 }

@@ -52,7 +52,7 @@ class StettingsScreen extends StatelessWidget {
                     applicationIcon: FlutterLogo(),
                     applicationLegalese: 'legallese',
                     applicationName: 'Fi Player',
-                    applicationVersion: '1.01'),
+                    applicationVersion: '2.0.0'),
               );
             },
             leading: const Icon(Icons.info_outline, color: Colors.purple),
@@ -68,10 +68,10 @@ class StettingsScreen extends StatelessWidget {
         context: context,
         builder: ((ctx) => AlertDialog(
               backgroundColor: mainBGColor,
-              content: const Text(
+              content: Text(
                 maxLines: 2,
                 'Are you sure? You will lost all Liked and Playlist videos.',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: allTextColor),
               ),
               actions: [
                 TextButton(

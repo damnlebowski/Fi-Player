@@ -3,6 +3,7 @@ import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_v
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import '../functions/all_functions.dart';
 import '../functions/thumbnail_fetching.dart';
 import '../screens/screen_inner_playlist/screen_inner_playlist.dart';
@@ -18,17 +19,17 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'There Is No Videos',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -92,7 +93,8 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 child: Text('Add to liked videos',
                                     style: TextStyle(color: allTextColor)),
                                 onTap: () {
-                                  addLikedVideo(context, allVideosNotify.value[index]);
+                                  addLikedVideo(
+                                      context, allVideosNotify.value[index]);
                                 },
                               ),
                               PopupMenuItem(
@@ -215,17 +217,17 @@ class GridViewWidgetForFolders extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'No Folders',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -277,17 +279,17 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'No Liked Videos Yet',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -378,6 +380,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
 
 //playlist section list view widget
 class GridViewWidgetForPlaylist extends StatelessWidget {
+  //................................................................
   const GridViewWidgetForPlaylist({super.key});
 
   @override
@@ -386,17 +389,17 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.mood_bad_sharp,
                 color: Colors.purple,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
                 'Playlist Is Empty',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: allTextColor),
               ),
             ],
           ))
@@ -451,7 +454,9 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
                                   PopupMenuItem(
                                     child: Text('Rename Playlist',
                                         style: TextStyle(color: allTextColor)),
-                                    onTap: () {},
+                                    onTap: () {
+                                      renamePlaylist(index, context);
+                                    },
                                   ),
                                   PopupMenuItem(
                                     child: Text('Delete Playlist',
@@ -478,11 +483,11 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
 
 //inner playlist section list view widget
 class GridViewWidgetForInnerPlaylist extends StatelessWidget {
-  GridViewWidgetForInnerPlaylist({super.key, required this.playlistName});
-  String playlistName;
+  GridViewWidgetForInnerPlaylist({super.key, required this.fromPlaylistName});
+  String fromPlaylistName;
   @override
   Widget build(BuildContext context) {
-    return playlist[playlistName]!.isEmpty
+    return playlist[fromPlaylistName]!.isEmpty
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -503,7 +508,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
-              itemCount: playlist[playlistName]?.length ?? 0,
+              itemCount: playlist[fromPlaylistName]?.length ?? 0,
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
@@ -513,7 +518,7 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VideoPlayingPage(
-                                fromList: playlist[playlistName]!,
+                                fromList: playlist[fromPlaylistName]!,
                                 index: index,
                                 seekFrom: 0,
                               )));
@@ -531,20 +536,22 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                                 height: 95,
                                 width: 150,
                                 child: ThumbnailWidget(
-                                    videoPath: playlist[playlistName]![index]),
+                                    videoPath:
+                                        playlist[fromPlaylistName]![index]),
                               ),
                               Positioned(
                                   bottom: 5,
                                   right: 5,
                                   child: VideoDuration(
-                                    videoPath: playlist[playlistName]![index],
+                                    videoPath:
+                                        playlist[fromPlaylistName]![index],
                                   ))
                             ],
                           ),
                         ),
                         ListTile(
                           title: Text(
-                            getVideoName(playlist[playlistName]![index]),
+                            getVideoName(playlist[fromPlaylistName]![index]),
                             style: TextStyle(color: allTextColor),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -562,11 +569,11 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
                                   style: TextStyle(color: allTextColor),
                                 ),
                                 onTap: () {
-                                  log('Song Removed From "$playlistName"');
+                                  log('Song Removed From "$fromPlaylistName"');
                                   snackBarMessage(context,
-                                      'Song Removed From "$playlistName"');
-                                  playlist[playlistName]!.removeAt(index);
-                                  isListView.notifyListeners();
+                                      'Song Removed From "$fromPlaylistName"');
+                                  deleteVideoFromPlaylist(
+                                      index, fromPlaylistName);
                                 },
                               )
                             ],

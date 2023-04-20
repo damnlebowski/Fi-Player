@@ -21,11 +21,11 @@ class PlaylistInsidePage extends StatelessWidget {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: ListViewWidgetForInnerPlaylist(
-                        playlistName: playlistKey[playlistIndex],
+                        fromPlaylistName: playlistKey[playlistIndex],
                       ),
                     )
                   : GridViewWidgetForInnerPlaylist(
-                      playlistName: playlistKey[playlistIndex],
+                      fromPlaylistName: playlistKey[playlistIndex],
                     ));
         });
   }

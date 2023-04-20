@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../functions/all_functions.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
 import '../../widget/grid_view.dart';
@@ -15,11 +16,12 @@ class LikedVideosPage extends StatelessWidget {
           return Scaffold(
             backgroundColor: mainBGColor,
             body: isListView.value == true
-                ? const Padding(
+                ? Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 8),
                     child: ListViewWidgetForLikedVideos(),
                   )
                 : GridViewWidgetForLikedVideos(),
+            floatingActionButton: ResumeButton(),
           );
         });
   }

@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'package:fi_player/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../screens/screen_video_playing/screen_video_playing.dart';
 import '../widget/appbar.dart';
 import '../widget/drawer.dart';
 
@@ -16,6 +18,8 @@ List<String> allFolders = [];
 Map<String, List<String>> playlist = {};
 
 List<String> playlistKey = [];
+
+ValueNotifier<List<String>> playedHistoryListNotifier = ValueNotifier([]);
 
 //for getting the name of video or folder from patch
 String getVideoName(String path) {
@@ -45,8 +49,7 @@ addplaylist(String playlistName) {
   playlistKey.add(playlistName);
 }
 
-
-//show dialouge playlist and playlist hive
+//show dialouge add playlist and playlist hive
 Future<dynamic> showDialougeOfPlaylist(BuildContext context,
     {required int videoIndex, required List listFrom}) {
   return Future.delayed(
@@ -59,8 +62,6 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
         final playlistController = TextEditingController();
         return Center(
             child: SizedBox(
-          // height: 400,
-          // width: 350,
           height: MediaQuery.of(context).size.height * .50,
           width: MediaQuery.of(context).size.height * .40,
           child: Card(
@@ -89,10 +90,12 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                           final playlistModel = PlayList(
                               playlistName: playlistController.text,
                               videosList: []);
+
                           playlistBox.add(playlistModel); //hive
                           addplaylist(playlistController.text);
+
+                          isListView.notifyListeners();
                         }
-                        isListView.notifyListeners();
                       },
                       child: const Text('add')),
                   Expanded(
@@ -102,17 +105,18 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                             ? Center(
                                 child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
+                                children: [
+                                  const Icon(
                                     Icons.mood_bad_sharp,
                                     color: Colors.purple,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
                                     'No Playlist',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(
+                                        fontSize: 20, color: allTextColor),
                                   ),
                                 ],
                               ))
@@ -178,11 +182,15 @@ void snackBarMessage(BuildContext context, String message) {
   ScaffoldMessenger.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(SnackBar(
+      width: 240,
+      behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 1),
-      content: Text(
-        message,
-        style: const TextStyle(
-            color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold),
+      content: Center(
+        child: Text(
+          message,
+          style: const TextStyle(
+              color: Colors.purple, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
       backgroundColor: Colors.purple[100],
       elevation: 5,
@@ -194,14 +202,18 @@ void snackBarMessage(BuildContext context, String message) {
 getEverthing() async {
   final likedBox = Hive.box<LikedVideo>('liked_video');
   final playlistBox = Hive.box<PlayList>('playlist_video');
+  final playedHistoryBox = Hive.box<PlayedHistory>('played_history');
   likedVideoNotify.value.clear();
   playlist.clear();
   playlistKey.clear();
+  playedHistoryListNotifier.value.clear();
 
+//get liked videos
   final List<LikedVideo> likedModelList = likedBox.values.toList();
   likedVideoNotify.value =
       likedModelList.map((element) => element.video).toList();
 
+//get play list
   final List<PlayList> playlistModel = playlistBox.values.toList();
   playlistKey = playlistModel.map((element) => element.playlistName).toList();
   var listOfList = playlistModel.map((element) => element.videosList).toList();
@@ -209,6 +221,12 @@ getEverthing() async {
     for (var element in playlistKey)
       element: listOfList[playlistKey.indexOf(element)]
   };
+
+  //get played history
+  final List<PlayedHistory> playedHistoryModelList =
+      playedHistoryBox.values.toList();
+  playedHistoryListNotifier.value =
+      playedHistoryModelList.map((element) => element.video).toList();
 }
 
 //reset all
@@ -216,14 +234,17 @@ resetEverthing() async {
   final likedBox = Hive.box<LikedVideo>('liked_video');
   final playlistBox = Hive.box<PlayList>('playlist_video');
   final lastPlayedBox = Hive.box<LastPlayed>('last_played');
+  final playedHistoryBox = Hive.box<PlayedHistory>('played_history');
   likedBox.clear();
   playlistBox.clear();
   lastPlayedBox.clear();
+  playedHistoryBox.clear();
   likedVideoNotify.value.clear();
   playlist.clear();
   playlistKey.clear();
-  likedVideoNotify.notifyListeners();
+  playedHistoryListNotifier.value.clear();
   isListView.notifyListeners();
+  likedVideoNotify.notifyListeners();
 }
 
 //add Liked Videos
@@ -272,7 +293,9 @@ class VideoDuration extends StatelessWidget {
         if (snapshot.hasData) {
           return Text(snapshot.data!,
               style: const TextStyle(
-                  backgroundColor: Colors.black, color: Colors.white));
+                  backgroundColor: Colors.black,
+                  color: Colors.white,
+                  fontSize: 12));
         } else {
           return Text('Error: ${snapshot.error}',
               style: const TextStyle(
@@ -310,6 +333,22 @@ void deletePlaylistHive(int index) {
   isListView.notifyListeners();
 }
 
+//delete a video from playlist
+
+void deleteVideoFromPlaylist(int index, String playlistName) {
+  final playlistBox = Hive.box<PlayList>('playlist_video');
+  List<String> videoList = [];
+  videoList.addAll(playlistBox.values
+      .elementAt(playlistKey.indexOf(playlistName))
+      .videosList);
+  videoList.removeAt(index);
+  PlayList playlistModel =
+      PlayList(playlistName: playlistName, videosList: videoList);
+  playlistBox.putAt(playlistKey.indexOf(playlistName), playlistModel);
+  playlist[playlistName]!.removeAt(index);
+  isListView.notifyListeners();
+}
+
 //rename playlist
 
 void renamePlaylist(int index, BuildContext context) {
@@ -323,8 +362,6 @@ void renamePlaylist(int index, BuildContext context) {
             child: SizedBox(
           height: MediaQuery.of(context).size.height * .25,
           width: MediaQuery.of(context).size.height * .40,
-          // height: 200,
-          // width: 300,
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -393,4 +430,50 @@ getToTelegram() async {
   String telegramUrl = "https://t.me/fi_player";
   Uri uri = Uri.parse(telegramUrl);
   await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication);
+}
+
+//add to played history
+addToPlayedHistory(String video, int position, int durstion) async {
+  final playedHistoryBox = Hive.box<PlayedHistory>('played_history');
+  final playedHistoryModel =
+      PlayedHistory(video: video, position: position, duration: durstion);
+  if (playedHistoryListNotifier.value.contains(video)) {
+    playedHistoryBox.deleteAt(playedHistoryListNotifier.value.indexOf(video));
+    playedHistoryListNotifier.value.remove(video);
+  }
+  playedHistoryBox.add(playedHistoryModel);
+  playedHistoryListNotifier.value.add(video);
+  SchedulerBinding.instance.addPostFrameCallback((_) {
+    playedHistoryListNotifier.notifyListeners();
+  });
+}
+
+//resume button
+class ResumeButton extends StatelessWidget {
+  const ResumeButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        final lastPlayedBox = Hive.box<LastPlayed>('last_played');
+        if (lastPlayedBox.isNotEmpty) {
+          LastPlayed lastPlayedModel = lastPlayedBox.values.first;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => VideoPlayingPage(
+                  index: 0,
+                  fromList: [lastPlayedModel.video],
+                  seekFrom: lastPlayedModel.position)));
+        } else {
+          snackBarMessage(context, 'No Videos Played Yet.');
+        }
+      },
+      child: const Icon(
+        Icons.play_circle_outline,
+        size: 35,
+      ),
+    );
+  }
 }

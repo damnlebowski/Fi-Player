@@ -58,25 +58,6 @@ class _NavbarPageState extends State<NavbarPage> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.playlist_add_rounded), label: 'PlayList')
                 ]),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                final lastPlayedBox = Hive.box<LastPlayed>('last_played');
-                if (lastPlayedBox.isNotEmpty) {
-                  LastPlayed lastPlayedModel = lastPlayedBox.values.first;
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => VideoPlayingPage(
-                          index: 0,
-                          fromList: [lastPlayedModel.video],
-                          seekFrom: lastPlayedModel.position)));
-                } else {
-                  snackBarMessage(context, 'No Videos Played Yet.');
-                }
-              },
-              child: const Icon(
-                Icons.play_circle_outline,
-                size: 35,
-              ),
-            ),
           );
         });
   }
