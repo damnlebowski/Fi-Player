@@ -58,6 +58,8 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
       ..initialize().then((_) {
         controller.seekTo(Duration(seconds: widget.seekFrom));
         setPlayingOrientation();
+        Future.delayed(const Duration(seconds: 3))
+            .then((_) => isVisible = false);
       });
   }
 

@@ -3,11 +3,11 @@ import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_video_folder.dart';
 import 'package:fi_player/screens/screen_inner_playlist/screen_inner_playlist.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
-import 'package:fi_player/widget/appbar.dart';
+// import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
+// import 'package:hive_flutter/adapters.dart';
 import '../functions/all_functions.dart';
-import '../model/model.dart';
+// import '../model/model.dart';
 import 'drawer.dart';
 
 //all videos section list view widget

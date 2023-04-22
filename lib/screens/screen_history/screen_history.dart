@@ -5,9 +5,9 @@ import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:fi_player/model/model.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+// import 'package:flutter/scheduler.dart';
 import 'package:hive_flutter/adapters.dart';
-import '../widget/drawer.dart';
+import '../../widget/drawer.dart';
 
 class VideoHistory extends StatelessWidget {
   const VideoHistory({super.key});
@@ -71,23 +71,24 @@ class VideoHistory extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => VideoPlayingPage(
-                                        index: 0,
-                                        fromList: [
-                                          playedHistoryBox.values
-                                              .elementAt(
-                                                  playedHistoryBox.length -
-                                                      1 -
-                                                      index)
-                                              .video
-                                        ],
-                                        seekFrom: playedHistoryBox.values
-                                            .elementAt(playedHistoryBox.length -
-                                                1 -
-                                                index)
-                                            .position),
-                                  ));
+                                  resumeAlert(context, playedHistoryBox, index);
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //   builder: (context) => VideoPlayingPage(
+                                  //       index: 0,
+                                  //       fromList: [
+                                  //         playedHistoryBox.values
+                                  //             .elementAt(
+                                  //                 playedHistoryBox.length -
+                                  //                     1 -
+                                  //                     index)
+                                  //             .video
+                                  //       ],
+                                  //       seekFrom: playedHistoryBox.values
+                                  //           .elementAt(playedHistoryBox.length -
+                                  //               1 -
+                                  //               index)
+                                  //           .position),
+                                  // ));
                                 },
                                 child: Container(
                                   color: Colors.black,
@@ -159,5 +160,61 @@ class VideoHistory extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  Future<dynamic> resumeAlert(
+      BuildContext context, Box<PlayedHistory> playedHistoryBox, int index) {
+    return showDialog(
+        context: context,
+        builder: ((ctx) => AlertDialog(
+              backgroundColor: mainBGColor,
+              content: Text(
+                maxLines: 2,
+                'Do you want to resume the video from where you stopped?',
+                style: TextStyle(fontSize: 18, color: allTextColor),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => VideoPlayingPage(
+                            index: 0,
+                            fromList: [
+                              playedHistoryBox.values
+                                  .elementAt(
+                                      playedHistoryBox.length - 1 - index)
+                                  .video
+                            ],
+                            seekFrom: 0),
+                      ));
+                    },
+                    child: const Text(
+                      'Start Over',
+                      style: TextStyle(fontSize: 18),
+                    )),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VideoPlayingPage(
+                          index: 0,
+                          fromList: [
+                            playedHistoryBox.values
+                                .elementAt(playedHistoryBox.length - 1 - index)
+                                .video
+                          ],
+                          seekFrom: playedHistoryBox.values
+                              .elementAt(playedHistoryBox.length - 1 - index)
+                              .position),
+                    ));
+                  },
+                  child: const Text(
+                    'Yes',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )
+              ],
+            )));
   }
 }

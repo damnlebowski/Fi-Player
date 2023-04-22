@@ -318,8 +318,13 @@ convertMillisecondsToTime(int milliseconds) {
   int minutes = (seconds / 60).truncate();
   int hours = (minutes / 60).truncate();
 
+  String hourText = '${hours.toString().padLeft(2, '')}:';
+  if (hours == 0) {
+    hourText = '';
+  }
+
   String formattedTime =
-      '${hours.toString().padLeft(2, '0')}:${(minutes % 60).toString().padLeft(2, '0')}:${(seconds % 60).toString().padLeft(2, '0')}';
+      '$hourText${(minutes % 60).toString().padLeft(2, '0')}:${(seconds % 60).toString().padLeft(2, '0')}';
   return formattedTime;
 }
 

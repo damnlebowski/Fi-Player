@@ -48,11 +48,38 @@ class StettingsScreen extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => const AboutDialog(
-                    applicationIcon: FlutterLogo(),
-                    applicationLegalese: 'legallese',
-                    applicationName: 'Fi Player',
-                    applicationVersion: '2.0.0'),
+                builder: (context) =>
+                    // AlertDialog(
+                    //       backgroundColor: mainBGColor,
+                    //       content: Row(
+                    //         children: [
+                    //           SizedBox(
+                    //               height: 70,
+                    //               width: 70,
+                    //               child: ClipRRect(
+                    //                   borderRadius: BorderRadius.circular(5),
+                    //                   child:
+                    //                       Image.asset('assets/FI_PLAYER.png'))),
+                    //           SizedBox(
+                    //             width: 25,
+                    //           ),
+                    //           Text(
+                    //             'Fi Player',
+                    //             style:
+                    //                 TextStyle(color: allTextColor, fontSize: 20),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       actions: [
+                    //         TextButton(
+                    //             onPressed: () => null, child: Text('CLOSE'))
+                    //       ],
+                    //     )
+                    const AboutDialog(
+                        applicationIcon: FlutterLogo(),
+                        applicationLegalese: 'legallese',
+                        applicationName: 'Fi Player',
+                        applicationVersion: '2.0.0'),
               );
             },
             leading: const Icon(Icons.info_outline, color: Colors.purple),

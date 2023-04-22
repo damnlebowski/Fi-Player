@@ -1,5 +1,5 @@
 import 'package:fi_player/functions/all_functions.dart';
-import 'package:fi_player/screens/screen_history.dart';
+import 'package:fi_player/screens/screen_history/screen_history.dart';
 import 'package:fi_player/screens/screen_search/screen_search.dart';
 import 'package:flutter/material.dart';
 import 'drawer.dart';

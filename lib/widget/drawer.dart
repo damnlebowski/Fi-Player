@@ -1,4 +1,4 @@
-import 'package:fi_player/screens/screen_history.dart';
+import 'package:fi_player/screens/screen_history/screen_history.dart';
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +51,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       bottomNavColor = Colors.white;
                     } else {
                       isDarkMode.value = true;
-                      mainBGColor = const Color.fromARGB(255, 43, 7, 48);
+                      mainBGColor = Color.fromARGB(255, 43, 7, 48);
                       allTextColor = Colors.white;
                       bottomNavColor = Colors.black;
                     }
