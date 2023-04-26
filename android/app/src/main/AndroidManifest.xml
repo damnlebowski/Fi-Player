@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.fi_player">
+    package="com.lebowski.fi_player">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
    <application
         android:label="Fi Player"
