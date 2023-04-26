@@ -16,7 +16,7 @@ class TermsAndConditionsPage extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Text('''Terms and Conditions for Video Player:
 
-These terms and conditions ("Agreement") govern your use of the video player ("Player") provided by us. By using the Player, you agree to be bound by this Agreement. If you do not agree to this Agreement, you may not use the Player.
+These terms and conditions ("Agreement") govern your use of the Fi player ("Player") provided by us. By using the Player, you agree to be bound by this Agreement. If you do not agree to this Agreement, you may not use the Player.
 
 1. License
 We grant you a limited, non-exclusive, non-transferable license to use the Player solely for the purpose of streaming video content in accordance with this Agreement.
@@ -42,13 +42,10 @@ We may terminate this Agreement at any time without notice. Upon termination, yo
 8. Modification
 We reserve the right to modify this Agreement at any time without notice. Your continued use of the Player following any such modification constitutes your agreement to be bound by the modified Agreement.
 
-9. Governing Law
-This Agreement shall be governed by and construed in accordance with the laws of [insert governing law jurisdiction].
-
-10. Entire Agreement
+9. Entire Agreement
 This Agreement constitutes the entire agreement between you and us with respect to the subject matter hereof and supersedes all prior and contemporaneous agreements and understandings, whether written or oral.
 
-If you have any questions or concerns about this Agreement, please contact us at damn_lebowski@protonmail.com.''',
+If you have any questions or concerns about this Agreement, please contact us at damn.lebowski@protonmail.com.''',
               style:
                   TextStyle(color: allTextColor, fontSize: 16, wordSpacing: 3)),
         ),

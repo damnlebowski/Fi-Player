@@ -218,73 +218,81 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
     return Container(
       height: 50,
       color: Colors.black.withOpacity(.5),
-      child: Row(
-        children: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.purple,
-              )),
-          const Spacer(),
-          FavIconWidget(video: playingVideoPath),
-          PopupMenuButton(
+      child: ListTile(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             icon: const Icon(
-              Icons.more_vert,
+              Icons.arrow_back,
               color: Colors.purple,
+            )),
+        title: Text(
+          getVideoName(widget.fromList[widget.index]),
+          style: const TextStyle(
+              color: Colors.purple, overflow: TextOverflow.ellipsis),
+        ),
+        // const Spacer(),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FavIconWidget(video: playingVideoPath),
+            PopupMenuButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.purple,
+              ),
+              color: Colors.black.withOpacity(.5),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: const Text(
+                    '0.25x',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                  onTap: () {
+                    controller.setPlaybackSpeed(0.25);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text(
+                    '0.50x',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                  onTap: () {
+                    controller.setPlaybackSpeed(0.50);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text(
+                    '1.00x',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                  onTap: () {
+                    controller.setPlaybackSpeed(1.00);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text(
+                    '1.25x',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                  onTap: () {
+                    controller.setPlaybackSpeed(1.25);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text(
+                    '1.50x',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                  onTap: () {
+                    controller.setPlaybackSpeed(1.50);
+                  },
+                ),
+              ],
             ),
-            color: Colors.black.withOpacity(.5),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: const Text(
-                  '0.25x',
-                  style: TextStyle(color: Colors.purple),
-                ),
-                onTap: () {
-                  controller.setPlaybackSpeed(0.25);
-                },
-              ),
-              PopupMenuItem(
-                child: const Text(
-                  '0.50x',
-                  style: TextStyle(color: Colors.purple),
-                ),
-                onTap: () {
-                  controller.setPlaybackSpeed(0.50);
-                },
-              ),
-              PopupMenuItem(
-                child: const Text(
-                  '1.00x',
-                  style: TextStyle(color: Colors.purple),
-                ),
-                onTap: () {
-                  controller.setPlaybackSpeed(1.00);
-                },
-              ),
-              PopupMenuItem(
-                child: const Text(
-                  '1.25x',
-                  style: TextStyle(color: Colors.purple),
-                ),
-                onTap: () {
-                  controller.setPlaybackSpeed(1.25);
-                },
-              ),
-              PopupMenuItem(
-                child: const Text(
-                  '1.50x',
-                  style: TextStyle(color: Colors.purple),
-                ),
-                onTap: () {
-                  controller.setPlaybackSpeed(1.50);
-                },
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -302,10 +310,15 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
             children: [
               videoDuration(controller: controller),
               Expanded(child: buildIndicator()),
-              Text(
-                convertMillisecondsToTime(
-                    controller.value.duration.inMilliseconds),
-                style: const TextStyle(color: Colors.white),
+              SizedBox(
+                // color: Colors.red,
+                width: 50,
+                child: Text(
+                  convertMillisecondsToTime(
+                      controller.value.duration.inMilliseconds),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -506,9 +519,14 @@ class _videoDurationState extends State<videoDuration> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      _position,
-      style: const TextStyle(color: Colors.white, fontSize: 15),
+    return SizedBox(
+      width: 50,
+      // color: Colors.red,
+      child: Text(
+        _position,
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.white, fontSize: 15),
+      ),
     );
   }
 

@@ -38,8 +38,11 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
             child: GridView.builder(
               itemCount: allVideosNotify.value.length,
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200),
+
+              //  const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
                     //liked and playlist
@@ -130,8 +133,10 @@ class GridViewWidgetForInnerVideos extends StatelessWidget {
       child: GridView.builder(
         itemCount: innerFolderData.length,
         physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200),
+        //  const SliverGridDelegateWithFixedCrossAxisCount(
+        //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
         itemBuilder: (context, index) {
           return InkWell(
               //liked and playlist
@@ -236,33 +241,36 @@ class GridViewWidgetForFolders extends StatelessWidget {
             child: GridView.builder(
               itemCount: allFolders.length,
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 3, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 150),
               itemBuilder: (context, index) {
                 return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            FolderInnerPage(folderAddress: allFolders[index]),
-                      ));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.folder_rounded,
-                          size: 70,
-                          color: Colors.purple,
-                        ),
-                        Text(
-                          getVideoName(allFolders[index]),
-                          style: TextStyle(color: allTextColor),
-                          // maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ],
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          FolderInnerPage(folderAddress: allFolders[index]),
                     ));
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.folder_rounded,
+                        size: 70,
+                        color: Colors.purple,
+                      ),
+                      Text(
+                        getVideoName(allFolders[index]),
+                        style: TextStyle(color: allTextColor),
+                        // maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ),
+                );
               },
             ),
           );
@@ -298,8 +306,10 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
             child: GridView.builder(
               itemCount: likedVideoNotify.value.length,
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200),
+              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemBuilder: (context, index) {
                 return InkWell(
                     //liked and playlist
@@ -408,8 +418,10 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
             child: GridView.builder(
               itemCount: playlistKey.length,
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200),
               itemBuilder: (context, index) {
                 return InkWell(
                     //liked and playlist
@@ -510,8 +522,10 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
             child: GridView.builder(
               itemCount: playlist[fromPlaylistName]?.length ?? 0,
               physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200),
               itemBuilder: (context, index) {
                 return InkWell(
                     //liked and playlist

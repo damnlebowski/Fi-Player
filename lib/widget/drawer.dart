@@ -1,7 +1,7 @@
-import 'package:fi_player/screens/screen_history/screen_history.dart';
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import '../screens/screen_help/screen_help.dart';
 
 ValueNotifier<bool> isDarkMode = ValueNotifier(false);
@@ -82,7 +82,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           ListTile(
-            onTap: () async {},
+            onTap: () {
+              Share.share('Check out this awesome app!');
+            },
             leading: const Icon(Icons.share, color: Colors.purple),
             title: Text(
               'Share Fi Player',

@@ -47,40 +47,50 @@ class StettingsScreen extends StatelessWidget {
           ListTile(
             onTap: () {
               showDialog(
-                context: context,
-                builder: (context) =>
-                    // AlertDialog(
-                    //       backgroundColor: mainBGColor,
-                    //       content: Row(
-                    //         children: [
-                    //           SizedBox(
-                    //               height: 70,
-                    //               width: 70,
-                    //               child: ClipRRect(
-                    //                   borderRadius: BorderRadius.circular(5),
-                    //                   child:
-                    //                       Image.asset('assets/FI_PLAYER.png'))),
-                    //           SizedBox(
-                    //             width: 25,
-                    //           ),
-                    //           Text(
-                    //             'Fi Player',
-                    //             style:
-                    //                 TextStyle(color: allTextColor, fontSize: 20),
-                    //           )
-                    //         ],
-                    //       ),
-                    //       actions: [
-                    //         TextButton(
-                    //             onPressed: () => null, child: Text('CLOSE'))
-                    //       ],
-                    //     )
-                    const AboutDialog(
-                        applicationIcon: FlutterLogo(),
-                        applicationLegalese: 'legallese',
-                        applicationName: 'Fi Player',
-                        applicationVersion: '2.0.0'),
-              );
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        backgroundColor: mainBGColor,
+                        content: SizedBox(
+                          height: MediaQuery.of(context).size.height * .3,
+                          width: MediaQuery.of(context).size.width * .4,
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.asset('assets/FI_PLAYER.png')),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              Text(
+                                'Fi Player',
+                                style: TextStyle(
+                                    color: allTextColor, fontSize: 22),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                'Version : 1.0.0',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text(
+                                'Created by LEBOWSKI',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('CLOSE'))
+                        ],
+                      ));
             },
             leading: const Icon(Icons.info_outline, color: Colors.purple),
             title: Text('About', style: TextStyle(color: allTextColor)),

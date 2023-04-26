@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../widget/drawer.dart';
 
@@ -25,9 +24,7 @@ We are committed to protecting the privacy and security of our users. This priva
 1. Information We Collect
             
 When you use our media player, we may collect the following information:
-• Device information: We may collect information about the device you are using to access the media player, such as the device type, operating system, and browser type.
 • Usage information: We may collect information about how you use the media player, such as the videos you watch, the features you use, and the settings you choose.
-• Log data: When you use our media player, our servers automatically record certain information, including your web request, IP address, browser type, referring / exit pages and URLs, number of clicks and how you interact with links on the media player, domain names, landing pages, pages viewed, and other such information.
                   
             
 2. How We Use Your Information
@@ -42,11 +39,7 @@ We may use the information we collect for the following purposes:
             
 3. How We Share Your Information
             
-We may share your information in the following ways:
-• With service providers who help us operate the media player
-• With third parties who provide advertising and analytics services
-• In connection with a merger, acquisition, or sale of our business
-• To comply with legal obligations or protect our rights
+We don't share your information
                   
             
 4. Your Choices and Rights
@@ -66,7 +59,7 @@ We may update this privacy policy from time to time. We will notify you of any m
             
 7. Contact Us
             
-If you have any questions or concerns about this privacy policy or our data practices, please contact us at [insert contact information].''',
+If you have any questions or concerns about this privacy policy or our data practices, please contact us at damn.lebowski@protonmail.com''',
               style:
                   TextStyle(color: allTextColor, fontSize: 16, wordSpacing: 3),
             ),
