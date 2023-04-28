@@ -83,7 +83,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Share.share('Check out this awesome app!');
+              Share.share(
+                  'Check out this awesome app!\nhttps://play.google.com/store/apps/details?id=com.lebowski.fi_player');
             },
             leading: const Icon(Icons.share, color: Colors.purple),
             title: Text(

@@ -8,7 +8,7 @@
 PRODUCT_NAME = fi_player
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.fiPlayer
+PRODUCT_BUNDLE_IDENTIFIER = com.lebowski.fi_player;
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
