@@ -48,7 +48,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
   String playingVideoPath = '';
   @override
   void initState() {
-    // TODO: implement initState
+    // print('----------------------------$isLikeVisible');
     super.initState();
     //..................................kodukanam
     playingVideoPath = widget.fromList[widget.index];
@@ -81,7 +81,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
 
     storeLastPlayed();
 
@@ -236,7 +235,7 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FavIconWidget(video: playingVideoPath),
+            FavIconWidget(video: playingVideoPath, fromList: widget.fromList),
             PopupMenuButton(
               icon: const Icon(
                 Icons.more_vert,
@@ -311,7 +310,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
               videoDuration(controller: controller),
               Expanded(child: buildIndicator()),
               SizedBox(
-                // color: Colors.red,
                 width: 50,
                 child: Text(
                   convertMillisecondsToTime(
@@ -353,20 +351,12 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                   if (widget.index > 0) {
                     widget.index--;
                     controller.pause();
-                    //..................................kodukanam
                     addToPlayedHistory(
                         playingVideoPath,
                         controller.value.position.inSeconds,
                         controller.value.duration.inSeconds);
                     playingVideoPath = widget.fromList[widget.index];
-                    // controller =
-                    //     VideoPlayerController.file(File(playingVideoPath))
-                    //       ..initialize().then((_) {
-                    //         setState(() {
-                    //           setPlayingOrientation();
-                    //         });
-                    //         controller.play();
-                    //       });
+
                     controller =
                         VideoPlayerController.file(File(playingVideoPath))
                           ..addListener(() => setState(() {}))
@@ -402,19 +392,12 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
                   if (widget.index < widget.fromList.length - 1) {
                     widget.index++;
                     controller.pause();
-                    //..................................kodukanam
                     addToPlayedHistory(
                         playingVideoPath,
                         controller.value.position.inSeconds,
                         controller.value.duration.inSeconds);
                     playingVideoPath = widget.fromList[widget.index];
-                    // controller =
-                    //     VideoPlayerController.file(File(playingVideoPath))
-                    //       ..initialize().then((_) {
-                    //         setState(() {
-                    //           setPlayingOrientation();
-                    //         });
-                    //       });
+
                     controller =
                         VideoPlayerController.file(File(playingVideoPath))
                           ..addListener(() => setState(() {}))
@@ -458,8 +441,9 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 }
 
 class FavIconWidget extends StatefulWidget {
-  FavIconWidget({super.key, required this.video});
+  FavIconWidget({super.key, required this.video, required this.fromList});
   String video;
+  List<String> fromList;
 
   @override
   State<FavIconWidget> createState() => _FavIconWidgetState();
@@ -468,27 +452,27 @@ class FavIconWidget extends StatefulWidget {
 class _FavIconWidgetState extends State<FavIconWidget> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          setState(() {
-            if (!likedVideoNotify.value.contains(widget.video)) {
-              addLikedVideo(context, widget.video);
-              isListView.notifyListeners();
-            } else {
-              removeLikedVideo(
-                  likedVideoNotify.value.indexOf(widget.video), context);
-              isListView.notifyListeners();
+    return Visibility(
+      visible: widget.fromList != likedVideoList ? true : false,
+      child: IconButton(
+          onPressed: () {
+            setState(() {
+              if (!likedVideoList.contains(widget.video)) {
+                addLikedVideo(context, widget.video);
+              } else {
+                removeLikedVideo(likedVideoList.indexOf(widget.video), context);
 
-              return;
-            }
-          });
-        },
-        icon: Icon(
-          likedVideoNotify.value.contains(widget.video)
-              ? Icons.favorite
-              : Icons.favorite_border,
-          color: Colors.purple,
-        ));
+                return;
+              }
+            });
+          },
+          icon: Icon(
+            likedVideoList.contains(widget.video)
+                ? Icons.favorite
+                : Icons.favorite_border,
+            color: Colors.purple,
+          )),
+    );
   }
 }
 
@@ -521,7 +505,6 @@ class _videoDurationState extends State<videoDuration> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 50,
-      // color: Colors.red,
       child: Text(
         _position,
         textAlign: TextAlign.center,

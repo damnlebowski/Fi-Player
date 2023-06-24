@@ -6,14 +6,9 @@ import 'drawer.dart';
 
 ValueNotifier<bool> isListView = ValueNotifier(true);
 
-class AppBarWidget extends StatefulWidget {
+class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key});
 
-  @override
-  State<AppBarWidget> createState() => _AppBarWidgetState();
-}
-
-class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -24,13 +19,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           children: [
             IconButton(
                 onPressed: () {
-                  setState(() {
-                    if (isListView.value == true) {
-                      isListView.value = false;
-                    } else {
-                      isListView.value = true;
-                    }
-                  });
+                  if (isListView.value == true) {
+                    isListView.value = false;
+                  } else {
+                    isListView.value = true;
+                  }
                 },
                 icon: isListView.value == true
                     ? const Icon(Icons.grid_view_sharp)
@@ -52,7 +45,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 PopupMenuItem(
                   child: Text('Refresh', style: TextStyle(color: allTextColor)),
                   onTap: () async {
-                    isListView.notifyListeners();
                     Future.delayed(
                       const Duration(seconds: 0),
                       () => showDialog(

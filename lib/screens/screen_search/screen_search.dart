@@ -1,23 +1,21 @@
+import 'dart:developer';
+
+import 'package:fi_player/bloc/search_page/search_page_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../functions/all_functions.dart';
 import '../../functions/thumbnail_fetching.dart';
 import '../../widget/drawer.dart';
 import '../screen_video_playing/screen_video_playing.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends StatelessWidget {
   SearchPage({super.key});
 
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
-
-  List<String> searchList = List<String>.from(allVideosNotify.value);
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SearchPageBloc>(context).add(SearchTextChanged(''));
     return Scaffold(
       backgroundColor: mainBGColor,
       appBar: AppBar(
@@ -29,13 +27,8 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             TextField(
               onChanged: (value) {
-                setState(() {
-                  searchList = allVideosNotify.value
-                      .where((element) => getVideoName(element)
-                          .toLowerCase()
-                          .contains(value.toLowerCase()))
-                      .toList();
-                });
+                BlocProvider.of<SearchPageBloc>(context)
+                    .add(SearchTextChanged(value));
               },
               controller: searchController,
               autofocus: true,
@@ -45,9 +38,11 @@ class _SearchPageState extends State<SearchPage> {
                   border: OutlineInputBorder()),
               style: TextStyle(color: allTextColor),
             ),
-            SizedBox(height: 10),
-            Expanded(
-                child: searchList.isEmpty
+            const SizedBox(height: 10),
+            Expanded(child: BlocBuilder<SearchPageBloc, SearchPageState>(
+              builder: (context, state) {
+                log('$state');
+                return state.results.isEmpty
                     ? Center(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -73,7 +68,7 @@ class _SearchPageState extends State<SearchPage> {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => VideoPlayingPage(
-                                        fromList: searchList,
+                                        fromList: state.results,
                                         index: index,
                                         seekFrom: 0,
                                       )));
@@ -85,23 +80,21 @@ class _SearchPageState extends State<SearchPage> {
                                   Container(
                                     color: Colors.black,
                                     height: 95,
-                                    // height: MediaQuery.of(context).size.height *
-                                    //     0.09,
                                     width: 100,
                                     child: ThumbnailWidget(
-                                        videoPath: searchList[index]),
+                                        videoPath: state.results[index]),
                                   ),
                                   Positioned(
                                       bottom: 5,
                                       right: 5,
                                       child: VideoDuration(
-                                        videoPath: searchList[index],
+                                        videoPath: state.results[index],
                                       ))
                                 ],
                               ),
                             ),
                             title: Text(
-                              getVideoName(searchList[index]),
+                              getVideoName(state.results[index]),
                               style: TextStyle(color: allTextColor),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -117,7 +110,8 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Text('Add to liked videos',
                                         style: TextStyle(color: allTextColor)),
                                     onTap: () {
-                                      addLikedVideo(context, searchList[index]);
+                                      addLikedVideo(
+                                          context, state.results[index]);
                                     }),
                                 PopupMenuItem(
                                   child: Text('Add to Playlist',
@@ -125,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
                                   onTap: () {
                                     showDialougeOfPlaylist(context,
                                         videoIndex: index,
-                                        listFrom: searchList);
+                                        listFrom: state.results);
                                   },
                                 )
                               ],
@@ -137,7 +131,9 @@ class _SearchPageState extends State<SearchPage> {
                             color: allTextColor,
                           );
                         },
-                        itemCount: searchList.length))
+                        itemCount: state.results.length);
+              },
+            ))
           ],
         ),
       ),

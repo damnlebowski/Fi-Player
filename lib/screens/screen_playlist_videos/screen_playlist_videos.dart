@@ -1,8 +1,10 @@
+import 'package:fi_player/bloc/playlist/playlist_bloc.dart';
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/model/model.dart';
 import 'package:fi_player/widget/grid_view.dart';
 import 'package:fi_player/widget/list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import '../../widget/appbar.dart';
 import '../../widget/drawer.dart';
@@ -74,13 +76,15 @@ class PlaylistPage extends StatelessWidget {
                                                     videosList: []);
                                                 playlistBox
                                                     .add(playlistModel); //hive
-                                                addplaylist(playlistController
-                                                    .text
-                                                    .trim());
-
+                                                BlocProvider.of<PlaylistBloc>(
+                                                        context)
+                                                    .add(AddPlaylist(
+                                                        playlistName:
+                                                            playlistController
+                                                                .text
+                                                                .trim()));
                                                 playlistController.clear();
                                                 Navigator.of(context).pop();
-                                                isListView.notifyListeners();
                                               }
                                             },
                                             child: const Text('add')),

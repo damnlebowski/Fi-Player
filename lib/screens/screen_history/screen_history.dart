@@ -5,7 +5,6 @@ import 'package:fi_player/functions/thumbnail_fetching.dart';
 import 'package:fi_player/model/model.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/scheduler.dart';
 import 'package:hive_flutter/adapters.dart';
 import '../../widget/drawer.dart';
 
@@ -35,9 +34,7 @@ class VideoHistory extends StatelessWidget {
                     onTap: () {
                       playedHistoryListNotifier.value.clear();
                       playedHistoryBox.clear();
-                      // SchedulerBinding.instance.addPostFrameCallback((_) {
                       playedHistoryListNotifier.notifyListeners();
-                      // });
                     },
                   )
                 ],
@@ -72,23 +69,6 @@ class VideoHistory extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   resumeAlert(context, playedHistoryBox, index);
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //   builder: (context) => VideoPlayingPage(
-                                  //       index: 0,
-                                  //       fromList: [
-                                  //         playedHistoryBox.values
-                                  //             .elementAt(
-                                  //                 playedHistoryBox.length -
-                                  //                     1 -
-                                  //                     index)
-                                  //             .video
-                                  //       ],
-                                  //       seekFrom: playedHistoryBox.values
-                                  //           .elementAt(playedHistoryBox.length -
-                                  //               1 -
-                                  //               index)
-                                  //           .position),
-                                  // ));
                                 },
                                 child: Container(
                                   color: Colors.black,

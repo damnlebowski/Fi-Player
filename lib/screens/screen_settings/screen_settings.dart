@@ -1,6 +1,7 @@
 import 'package:fi_player/functions/all_functions.dart';
 import 'package:fi_player/screens/screen_privacy_policy/screen_privacy_policy.dart';
 import 'package:fi_player/screens/screen_terms_and_condition/screen_terms_and_condition.dart';
+import 'package:fi_player/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
 import '../../widget/drawer.dart';
 
@@ -120,7 +121,11 @@ class StettingsScreen extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     resetEverthing();
-                    Navigator.of(context).pop(ctx);
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const SplashScreen(),
+                        ),
+                        (route) => true);
                   },
                   child: const Text(
                     'Yes',

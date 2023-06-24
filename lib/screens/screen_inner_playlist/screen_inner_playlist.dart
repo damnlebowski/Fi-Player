@@ -10,23 +10,19 @@ class PlaylistInsidePage extends StatelessWidget {
   int playlistIndex;
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: isListView,
-        builder: (context, value, child) {
-          return Scaffold(
-              backgroundColor: mainBGColor,
-              appBar: const PreferredSize(
-                  preferredSize: Size.fromHeight(70), child: AppBarWidget()),
-              body: isListView.value == true
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: ListViewWidgetForInnerPlaylist(
-                        fromPlaylistName: playlistKey[playlistIndex],
-                      ),
-                    )
-                  : GridViewWidgetForInnerPlaylist(
-                      fromPlaylistName: playlistKey[playlistIndex],
-                    ));
-        });
+    return Scaffold(
+        backgroundColor: mainBGColor,
+        appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(70), child: AppBarWidget()),
+        body: isListView.value == true
+            ? Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: ListViewWidgetForInnerPlaylist(
+                  fromPlaylistName: playlistKey[playlistIndex],
+                ),
+              )
+            : GridViewWidgetForInnerPlaylist(
+                fromPlaylistName: playlistKey[playlistIndex],
+              ));
   }
 }

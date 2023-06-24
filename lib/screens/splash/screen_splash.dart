@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../functions/all_functions.dart';
 import '../../functions/video_fetching.dart';
@@ -15,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     wait();
   }
@@ -31,10 +29,19 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 1));
     FetchAllVideos ob = FetchAllVideos();
     List<String> allVideos = await ob.getAllVideos();
-    allVideosNotify.value.addAll(allVideos);
+    allVideosList.addAll(allVideos);
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => NavbarPage(),
+      builder: (context) => MyWidget(),
     ));
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return NavbarPage();
   }
 }

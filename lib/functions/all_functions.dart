@@ -1,17 +1,20 @@
 import 'dart:developer';
+import 'package:fi_player/bloc/liked_video/liked_video_bloc.dart';
+import 'package:fi_player/bloc/playlist/playlist_bloc.dart';
+import 'package:fi_player/bloc/playlist_inner_video/playlist_inner_videos_bloc.dart';
 import 'package:fi_player/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../screens/screen_video_playing/screen_video_playing.dart';
-import '../widget/appbar.dart';
 import '../widget/drawer.dart';
 
-ValueNotifier<List<String>> allVideosNotify = ValueNotifier([]);
+List<String> allVideosList = [];
 
-ValueNotifier<List<String>> likedVideoNotify = ValueNotifier([]);
+List<String> likedVideoList = [];
 
 List<String> allFolders = [];
 
@@ -37,16 +40,9 @@ getFoldersList(String videoPath) {
 
 //to get videos inside the specific folder
 getInnerFolderData(String folderPath) {
-  var innerFolder = allVideosNotify.value
-      .where((element) => element.contains(folderPath))
-      .toList();
+  var innerFolder =
+      allVideosList.where((element) => element.contains(folderPath)).toList();
   return innerFolder;
-}
-
-//creating playlist
-addplaylist(String playlistName) {
-  playlist[playlistName] = [];
-  playlistKey.add(playlistName);
 }
 
 //show dialouge add playlist and playlist hive
@@ -92,80 +88,84 @@ Future<dynamic> showDialougeOfPlaylist(BuildContext context,
                               videosList: []);
 
                           playlistBox.add(playlistModel); //hive
-                          addplaylist(playlistController.text);
-
-                          isListView.notifyListeners();
+                          BlocProvider.of<PlaylistBloc>(context).add(
+                              AddPlaylist(
+                                  playlistName:
+                                      playlistController.text.trim()));
                         }
                       },
                       child: const Text('add')),
                   Expanded(
-                    child: ValueListenableBuilder(
-                        valueListenable: isListView,
-                        builder: (context, value, child) => playlist.isEmpty
-                            ? Center(
-                                child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.mood_bad_sharp,
-                                    color: Colors.purple,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'No Playlist',
-                                    style: TextStyle(
-                                        fontSize: 20, color: allTextColor),
-                                  ),
-                                ],
-                              ))
-                            : ListView.separated(
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    tileColor: Colors.purple[100],
-                                    onTap: () {
-                                      if (!playlist[playlistKey[index]]!
-                                          .contains(listFrom[videoIndex])) {
-                                        //add video and playlist to hive
-                                        playlist[playlistKey[index]]!
-                                            .add(listFrom[videoIndex]);
-                                        final playlistModel = PlayList(
-                                            playlistName: playlistKey[index],
-                                            videosList:
-                                                playlist[playlistKey[index]]!);
-                                        playlistBox.putAt(
-                                            index, playlistModel); //hive
-                                        log('Successfully Added To "${playlistKey[index]}"');
-                                        snackBarMessage(context,
-                                            'Successfully Added To "${playlistKey[index]}"');
-                                      } else {
-                                        log('Already Contains');
-                                        snackBarMessage(
-                                            context, 'Already Contains');
-                                      }
-                                      Navigator.of(context).pop();
-                                    },
-                                    leading: const Icon(
-                                      Icons.playlist_play,
-                                      color: Colors.purple,
-                                      size: 60,
-                                    ),
-                                    title: Text(
-                                      playlistKey[index],
-                                      style: TextStyle(color: allTextColor),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return Divider(
-                                    color: allTextColor,
-                                  );
-                                },
-                                itemCount: playlist.length)),
+                    child: playlist.isEmpty
+                        ? Center(
+                            child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.mood_bad_sharp,
+                                color: Colors.purple,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'No Playlist',
+                                style: TextStyle(
+                                    fontSize: 20, color: allTextColor),
+                              ),
+                            ],
+                          ))
+                        : BlocBuilder<PlaylistBloc, PlaylistState>(
+                            builder: (context, state) {
+                              return ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      tileColor: Colors.purple[100],
+                                      onTap: () {
+                                        if (!playlist[state.playlistKey[index]]!
+                                            .contains(listFrom[videoIndex])) {
+                                          //add video and playlist to hive
+                                          playlist[state.playlistKey[index]]!
+                                              .add(listFrom[videoIndex]);
+                                          final playlistModel = PlayList(
+                                              playlistName:
+                                                  state.playlistKey[index],
+                                              videosList: playlist[
+                                                  state.playlistKey[index]]!);
+                                          playlistBox.putAt(
+                                              index, playlistModel); //hive
+                                          log('Successfully Added To "${state.playlistKey[index]}"');
+                                          snackBarMessage(context,
+                                              'Successfully Added To "${state.playlistKey[index]}"');
+                                        } else {
+                                          log('Already Contains');
+                                          snackBarMessage(
+                                              context, 'Already Contains');
+                                        }
+                                        Navigator.of(context).pop();
+                                      },
+                                      leading: const Icon(
+                                        Icons.playlist_play,
+                                        color: Colors.purple,
+                                        size: 60,
+                                      ),
+                                      title: Text(
+                                        state.playlistKey[index],
+                                        style: TextStyle(color: allTextColor),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      color: allTextColor,
+                                    );
+                                  },
+                                  itemCount: state.playlistKey.length);
+                            },
+                          ),
                   )
                 ],
               ),
@@ -203,15 +203,14 @@ getEverthing() async {
   final likedBox = Hive.box<LikedVideo>('liked_video');
   final playlistBox = Hive.box<PlayList>('playlist_video');
   final playedHistoryBox = Hive.box<PlayedHistory>('played_history');
-  likedVideoNotify.value.clear();
+  likedVideoList.clear();
   playlist.clear();
   playlistKey.clear();
   playedHistoryListNotifier.value.clear();
 
 //get liked videos
   final List<LikedVideo> likedModelList = likedBox.values.toList();
-  likedVideoNotify.value =
-      likedModelList.map((element) => element.video).toList();
+  likedVideoList = likedModelList.map((element) => element.video).toList();
 
 //get play list
   final List<PlayList> playlistModel = playlistBox.values.toList();
@@ -239,27 +238,24 @@ resetEverthing() async {
   playlistBox.clear();
   lastPlayedBox.clear();
   playedHistoryBox.clear();
-  likedVideoNotify.value.clear();
+  likedVideoList.clear();
   playlist.clear();
   playlistKey.clear();
   playedHistoryListNotifier.value.clear();
-  isListView.notifyListeners();
-  likedVideoNotify.notifyListeners();
 }
 
 //add Liked Videos
 
 void addLikedVideo(BuildContext context, String video) async {
-  if (!likedVideoNotify.value.contains(video)) {
+  if (!likedVideoList.contains(video)) {
     final likedModel = LikedVideo(video: video);
     final likedBox = Hive.box<LikedVideo>('liked_video');
     await likedBox.add(likedModel);
-    likedVideoNotify.value.add(video);
 
+    BlocProvider.of<LikedVideoBloc>(context)
+        .add(AddLikedVideo(videoPath: video));
     log('Successfully added to liked videos');
     snackBarMessage(context, 'Successfully Added To Liked Videos');
-    likedVideoNotify.notifyListeners();
-
     return;
   } else {
     log('already contains');
@@ -272,9 +268,9 @@ void addLikedVideo(BuildContext context, String video) async {
 
 void removeLikedVideo(int index, BuildContext context) {
   final likedBox = Hive.box<LikedVideo>('liked_video');
-  likedVideoNotify.value.removeAt(index);
   likedBox.deleteAt(index);
-  likedVideoNotify.notifyListeners();
+  BlocProvider.of<LikedVideoBloc>(context)
+      .add(RemoveLikedVideo(videoPath: likedVideoList[index]));
   log('Removed From Liked');
   snackBarMessage(context, 'Removed From Liked');
   return;
@@ -330,17 +326,17 @@ convertMillisecondsToTime(int milliseconds) {
 
 //delete Playlist Hive
 
-void deletePlaylistHive(int index) {
+void deletePlaylistHive(int index, BuildContext context) {
   final playlistBox = Hive.box<PlayList>('playlist_video');
   playlist.remove(playlistKey[index]);
   playlistBox.deleteAt(index);
-  playlistKey.removeAt(index);
-  isListView.notifyListeners();
+  BlocProvider.of<PlaylistBloc>(context).add(RemovePlaylist(index: index));
 }
 
 //delete a video from playlist
 
-void deleteVideoFromPlaylist(int index, String playlistName) {
+void deleteVideoFromPlaylist(
+    int index, String playlistName, BuildContext context) {
   final playlistBox = Hive.box<PlayList>('playlist_video');
   List<String> videoList = [];
   videoList.addAll(playlistBox.values
@@ -350,8 +346,8 @@ void deleteVideoFromPlaylist(int index, String playlistName) {
   PlayList playlistModel =
       PlayList(playlistName: playlistName, videosList: videoList);
   playlistBox.putAt(playlistKey.indexOf(playlistName), playlistModel);
-  playlist[playlistName]!.removeAt(index);
-  isListView.notifyListeners();
+  BlocProvider.of<PlaylistInnerVideosBloc>(context)
+      .add(RemoveVideo(playlistName: playlistName, index: index));
 }
 
 //rename playlist
@@ -400,18 +396,16 @@ void renamePlaylist(int index, BuildContext context) {
                                     .contains(playlistController.text.trim())) {
                               final playlistBox =
                                   Hive.box<PlayList>('playlist_video');
-                              playlist[playlistController.text] =
-                                  playlist[playlistKey[index]]!;
-
-                              playlist.remove(playlistKey[index]);
-
-                              playlistKey[index] = playlistController.text;
+                              BlocProvider.of<PlaylistBloc>(context).add(
+                                  RenamePlaylist(
+                                      playlistName:
+                                          playlistController.text.trim(),
+                                      index: index));
                               final playlistModel = PlayList(
                                   playlistName: playlistKey[index],
                                   videosList: playlist[playlistKey[index]]!);
                               playlistBox.putAt(index, playlistModel);
 
-                              isListView.notifyListeners();
                               playlistController.clear();
                               Navigator.of(context).pop();
                             }

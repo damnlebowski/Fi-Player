@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'package:fi_player/bloc/liked_video/liked_video_bloc.dart';
+import 'package:fi_player/bloc/playlist/playlist_bloc.dart';
+import 'package:fi_player/bloc/playlist_inner_video/playlist_inner_videos_bloc.dart';
 import 'package:fi_player/screens/screen_arranged_video_folder/screen_arranged_video_folder.dart';
 import 'package:fi_player/screens/screen_video_playing/screen_video_playing.dart';
 import 'package:fi_player/widget/appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../functions/all_functions.dart';
 import '../functions/thumbnail_fetching.dart';
 import '../screens/screen_inner_playlist/screen_inner_playlist.dart';
@@ -15,7 +18,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return allVideosNotify.value.isEmpty
+    return allVideosList.isEmpty
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,7 +39,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.all(10),
             child: GridView.builder(
-              itemCount: allVideosNotify.value.length,
+              itemCount: allVideosList.length,
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200),
@@ -49,7 +52,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => VideoPlayingPage(
-                                fromList: allVideosNotify.value,
+                                fromList: allVideosList,
                                 index: index,
                                 seekFrom: 0,
                               )));
@@ -67,20 +70,20 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 height: 95,
                                 width: 150,
                                 child: ThumbnailWidget(
-                                    videoPath: allVideosNotify.value[index]),
+                                    videoPath: allVideosList[index]),
                               ),
                               Positioned(
                                   bottom: 5,
                                   right: 5,
                                   child: VideoDuration(
-                                    videoPath: allVideosNotify.value[index],
+                                    videoPath: allVideosList[index],
                                   ))
                             ],
                           ),
                         ),
                         ListTile(
                           title: Text(
-                            getVideoName(allVideosNotify.value[index]),
+                            getVideoName(allVideosList[index]),
                             style: TextStyle(color: allTextColor),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -96,8 +99,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 child: Text('Add to liked videos',
                                     style: TextStyle(color: allTextColor)),
                                 onTap: () {
-                                  addLikedVideo(
-                                      context, allVideosNotify.value[index]);
+                                  addLikedVideo(context, allVideosList[index]);
                                 },
                               ),
                               PopupMenuItem(
@@ -106,7 +108,7 @@ class GridViewWidgetForAllVideos extends StatelessWidget {
                                 onTap: () {
                                   showDialougeOfPlaylist(context,
                                       videoIndex: index,
-                                      listFrom: allVideosNotify.value);
+                                      listFrom: allVideosList);
                                 },
                               )
                             ],
@@ -283,7 +285,7 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return likedVideoNotify.value.isEmpty
+    return likedVideoList.isEmpty
         ? Center(
             child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -303,85 +305,85 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
           ))
         : Padding(
             padding: const EdgeInsets.all(10),
-            child: GridView.builder(
-              itemCount: likedVideoNotify.value.length,
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200),
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-              itemBuilder: (context, index) {
-                return InkWell(
-                    //liked and playlist
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => VideoPlayingPage(
-                                fromList: likedVideoNotify.value,
-                                index: index,
-                                seekFrom: 0,
-                              )));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(7),
-                          child: Stack(
-                            children: [
-                              Container(
-                                color: Colors.black,
-                                height: 95,
-                                width: 150,
-                                child: ThumbnailWidget(
-                                    videoPath: likedVideoNotify.value[index]),
+            child: BlocBuilder<LikedVideoBloc, LikedVideoState>(
+              builder: (context, state) {
+                return GridView.builder(
+                  itemCount: state.likedVideos.length,
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        //liked and playlist
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => VideoPlayingPage(
+                                    fromList: state.likedVideos,
+                                    index: index,
+                                    seekFrom: 0,
+                                  )));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    color: Colors.black,
+                                    height: 95,
+                                    width: 150,
+                                    child: ThumbnailWidget(
+                                        videoPath: state.likedVideos[index]),
+                                  ),
+                                  Positioned(
+                                      bottom: 5,
+                                      right: 5,
+                                      child: VideoDuration(
+                                        videoPath: state.likedVideos[index],
+                                      ))
+                                ],
                               ),
-                              Positioned(
-                                  bottom: 5,
-                                  right: 5,
-                                  child: VideoDuration(
-                                    videoPath: likedVideoNotify.value[index],
-                                  ))
-                            ],
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            getVideoName(likedVideoNotify.value[index]),
-                            style: TextStyle(color: allTextColor),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: PopupMenuButton(
-                            icon: const Icon(
-                              Icons.more_vert,
-                              color: Colors.grey,
                             ),
-                            color: mainBGColor,
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: Text('Remove from liked videos',
-                                    style: TextStyle(color: allTextColor)),
-                                onTap: () {
-                                  likedVideoNotify.value
-                                      .remove(likedVideoNotify.value[index]);
-                                  isListView.notifyListeners();
-                                },
+                            ListTile(
+                              title: Text(
+                                getVideoName(state.likedVideos[index]),
+                                style: TextStyle(color: allTextColor),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              PopupMenuItem(
-                                child: Text('Add to Playlist',
-                                    style: TextStyle(color: allTextColor)),
-                                onTap: () {
-                                  showDialougeOfPlaylist(context,
-                                      videoIndex: index,
-                                      listFrom: likedVideoNotify.value);
-                                },
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
+                              trailing: PopupMenuButton(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.grey,
+                                ),
+                                color: mainBGColor,
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text('Remove from liked videos',
+                                        style: TextStyle(color: allTextColor)),
+                                    onTap: () {
+                                      removeLikedVideo(index, context);
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Add to Playlist',
+                                        style: TextStyle(color: allTextColor)),
+                                    onTap: () {
+                                      showDialougeOfPlaylist(context,
+                                          videoIndex: index,
+                                          listFrom: state.likedVideos);
+                                    },
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ));
+                  },
+                );
               },
             ),
           );
@@ -390,7 +392,6 @@ class GridViewWidgetForLikedVideos extends StatelessWidget {
 
 //playlist section list view widget
 class GridViewWidgetForPlaylist extends StatelessWidget {
-  //................................................................
   const GridViewWidgetForPlaylist({super.key});
 
   @override
@@ -415,78 +416,83 @@ class GridViewWidgetForPlaylist extends StatelessWidget {
           ))
         : Padding(
             padding: const EdgeInsets.all(10),
-            child: GridView.builder(
-              itemCount: playlistKey.length,
-              physics: const BouncingScrollPhysics(),
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200),
-              itemBuilder: (context, index) {
-                return InkWell(
-                    //liked and playlist
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PlaylistInsidePage(
-                                playlistIndex: index,
-                              )));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 197, 195, 195))),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.playlist_play,
-                            color: Colors.purple,
-                            size: 60,
-                          ),
-                          Row(
+            child: BlocBuilder<PlaylistBloc, PlaylistState>(
+              builder: (context, state) {
+                return GridView.builder(
+                  itemCount: state.playlistKey.length,
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        //liked and playlist
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PlaylistInsidePage(
+                                    playlistIndex: index,
+                                  )));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: const Color.fromARGB(
+                                      255, 197, 195, 195))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const SizedBox(
-                                width: 15,
+                              const Icon(
+                                Icons.playlist_play,
+                                color: Colors.purple,
+                                size: 60,
                               ),
-                              Text(
-                                playlistKey[index],
-                                style: TextStyle(color: allTextColor),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const Spacer(),
-                              PopupMenuButton(
-                                icon: const Icon(
-                                  Icons.more_vert,
-                                  color: Colors.grey,
-                                ),
-                                color: mainBGColor,
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                    child: Text('Rename Playlist',
-                                        style: TextStyle(color: allTextColor)),
-                                    onTap: () {
-                                      renamePlaylist(index, context);
-                                    },
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
                                   ),
-                                  PopupMenuItem(
-                                    child: Text('Delete Playlist',
-                                        style: TextStyle(color: allTextColor)),
-                                    onTap: () {
-                                      snackBarMessage(context,
-                                          'Playlist "${playlistKey[index]}" Deleted');
-                                      log('Removed "${playlistKey[index]}"');
-                                      deletePlaylistHive(index);
-                                    },
+                                  Text(
+                                    state.playlistKey[index],
+                                    style: TextStyle(color: allTextColor),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const Spacer(),
+                                  PopupMenuButton(
+                                    icon: const Icon(
+                                      Icons.more_vert,
+                                      color: Colors.grey,
+                                    ),
+                                    color: mainBGColor,
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        child: Text('Rename Playlist',
+                                            style:
+                                                TextStyle(color: allTextColor)),
+                                        onTap: () {
+                                          renamePlaylist(index, context);
+                                        },
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text('Delete Playlist',
+                                            style:
+                                                TextStyle(color: allTextColor)),
+                                        onTap: () {
+                                          snackBarMessage(context,
+                                              'Playlist "${state.playlistKey[index]}" Deleted');
+                                          log('Removed "${state.playlistKey[index]}"');
+                                          deletePlaylistHive(index, context);
+                                        },
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                    ));
+                        ));
+                  },
+                );
               },
             ),
           );
@@ -519,82 +525,88 @@ class GridViewWidgetForInnerPlaylist extends StatelessWidget {
           ))
         : Padding(
             padding: const EdgeInsets.all(10),
-            child: GridView.builder(
-              itemCount: playlist[fromPlaylistName]?.length ?? 0,
-              physics: const BouncingScrollPhysics(),
-              // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //     crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200),
-              itemBuilder: (context, index) {
-                return InkWell(
-                    //liked and playlist
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => VideoPlayingPage(
-                                fromList: playlist[fromPlaylistName]!,
-                                index: index,
-                                seekFrom: 0,
-                              )));
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(7),
-                          child: Stack(
-                            children: [
-                              Container(
-                                color: Colors.black,
-                                height: 95,
-                                width: 150,
-                                child: ThumbnailWidget(
-                                    videoPath:
-                                        playlist[fromPlaylistName]![index]),
+            child:
+                BlocBuilder<PlaylistInnerVideosBloc, PlaylistInnerVideosState>(
+              builder: (context, state) {
+                return GridView.builder(
+                  itemCount: state.playlist.isEmpty
+                      ? playlist[fromPlaylistName]!.length
+                      : state.playlist.length,
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        //liked and playlist
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => VideoPlayingPage(
+                                    fromList: playlist[fromPlaylistName]!,
+                                    index: index,
+                                    seekFrom: 0,
+                                  )));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(7),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    color: Colors.black,
+                                    height: 95,
+                                    width: 150,
+                                    child: ThumbnailWidget(
+                                        videoPath:
+                                            playlist[fromPlaylistName]![index]),
+                                  ),
+                                  Positioned(
+                                      bottom: 5,
+                                      right: 5,
+                                      child: VideoDuration(
+                                        videoPath:
+                                            playlist[fromPlaylistName]![index],
+                                      ))
+                                ],
                               ),
-                              Positioned(
-                                  bottom: 5,
-                                  right: 5,
-                                  child: VideoDuration(
-                                    videoPath:
-                                        playlist[fromPlaylistName]![index],
-                                  ))
-                            ],
-                          ),
-                        ),
-                        ListTile(
-                          title: Text(
-                            getVideoName(playlist[fromPlaylistName]![index]),
-                            style: TextStyle(color: allTextColor),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: PopupMenuButton(
-                            icon: const Icon(
-                              Icons.more_vert,
-                              color: Colors.grey,
                             ),
-                            color: mainBGColor,
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: Text(
-                                  'Remove From Playlist',
-                                  style: TextStyle(color: allTextColor),
+                            ListTile(
+                              title: Text(
+                                getVideoName(
+                                    playlist[fromPlaylistName]![index]),
+                                style: TextStyle(color: allTextColor),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              trailing: PopupMenuButton(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.grey,
                                 ),
-                                onTap: () {
-                                  log('Song Removed From "$fromPlaylistName"');
-                                  snackBarMessage(context,
-                                      'Song Removed From "$fromPlaylistName"');
-                                  deleteVideoFromPlaylist(
-                                      index, fromPlaylistName);
-                                },
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
+                                color: mainBGColor,
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    child: Text(
+                                      'Remove From Playlist',
+                                      style: TextStyle(color: allTextColor),
+                                    ),
+                                    onTap: () {
+                                      log('Song Removed From "$fromPlaylistName"');
+                                      snackBarMessage(context,
+                                          'Song Removed From "$fromPlaylistName"');
+                                      deleteVideoFromPlaylist(
+                                          index, fromPlaylistName, context);
+                                    },
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ));
+                  },
+                );
               },
             ),
           );

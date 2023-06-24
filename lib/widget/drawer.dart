@@ -1,24 +1,19 @@
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
-import 'package:fi_player/widget/appbar.dart';
+import 'package:fi_player/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import '../screens/screen_help/screen_help.dart';
 
-ValueNotifier<bool> isDarkMode = ValueNotifier(false);
+bool isDarkMode = false;
 Color? mainBGColor = Colors.purple[50];
 Color? allTextColor = Colors.black;
 Color? bottomNavColor = Colors.white;
 
-class DrawerWidget extends StatefulWidget {
+class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
     super.key,
   });
 
-  @override
-  State<DrawerWidget> createState() => _DrawerWidgetState();
-}
-
-class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
     return NavigationDrawer(
@@ -41,22 +36,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               style: TextStyle(color: allTextColor),
             ),
             trailing: Switch(
-                value: isDarkMode.value,
+                value: isDarkMode,
                 onChanged: (value) {
-                  setState(() {
-                    if (isDarkMode.value == true) {
-                      isDarkMode.value = false;
-                      mainBGColor = Colors.purple[50];
-                      allTextColor = Colors.black;
-                      bottomNavColor = Colors.white;
-                    } else {
-                      isDarkMode.value = true;
-                      mainBGColor = Color.fromARGB(255, 43, 7, 48);
-                      allTextColor = Colors.white;
-                      bottomNavColor = Colors.black;
-                    }
-                    isListView.notifyListeners();
-                  });
+                  if (isDarkMode == true) {
+                    isDarkMode = false;
+                    mainBGColor = Colors.purple[50];
+                    allTextColor = Colors.black;
+                    bottomNavColor = Colors.white;
+                  } else {
+                    isDarkMode = true;
+                    mainBGColor = const Color.fromARGB(255, 43, 7, 48);
+                    allTextColor = Colors.white;
+                    bottomNavColor = Colors.black;
+                  }
+
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const SplashScreen(),
+                      ),
+                      (route) => true);
                 }),
           ),
           ListTile(
