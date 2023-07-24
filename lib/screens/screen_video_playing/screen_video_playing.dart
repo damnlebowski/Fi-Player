@@ -81,7 +81,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
 
   @override
   void dispose() {
-
     storeLastPlayed();
 
     setAllOrientationToDefault();
@@ -231,7 +230,6 @@ class _VideoPlayingPageState extends State<VideoPlayingPage> {
           style: const TextStyle(
               color: Colors.purple, overflow: TextOverflow.ellipsis),
         ),
-        // const Spacer(),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

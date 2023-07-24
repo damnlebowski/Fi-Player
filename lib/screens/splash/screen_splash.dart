@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../functions/all_functions.dart';
-import '../../functions/video_fetching.dart';
 import '../../widget/drawer.dart';
 import '../screen_navbar_home/screen_navbar_home.dart';
 
@@ -12,6 +13,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  static const MethodChannel _platform =
+      MethodChannel('com.lebowski/video_files/search');
+
   @override
   void initState() {
     super.initState();
@@ -27,21 +31,29 @@ class _SplashScreenState extends State<SplashScreen> {
 
   wait() async {
     await Future.delayed(const Duration(seconds: 1));
-    FetchAllVideos ob = FetchAllVideos();
-    List<String> allVideos = await ob.getAllVideos();
+    List<String> allVideos = await searchInStorage();
     allVideosList.addAll(allVideos);
-
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => MyWidget(),
+      builder: (context) => NavbarPage(),
     ));
   }
-}
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
+  Future<List<String>> searchInStorage() async {
+    var status = await Permission.storage.request();
 
-  @override
-  Widget build(BuildContext context) {
-    return NavbarPage();
+    if (status.isGranted) {
+      List<String>? videoList =
+          await _SplashScreenState._platform.invokeListMethod('search');
+      if (videoList != null) {
+        for (var video in videoList) {
+          //checking and creating the folder
+          getFoldersList(video);
+        }
+      }
+
+      return videoList ?? [];
+    } else {
+      return [];
+    }
   }
 }

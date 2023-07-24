@@ -36,6 +36,7 @@ getFoldersList(String videoPath) {
   var temp = videoPath.split('/');
   temp.removeLast();
   allFolders.add(temp.join('/'));
+  allFolders = allFolders.toSet().toList();
 }
 
 //to get videos inside the specific folder

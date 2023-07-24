@@ -1,7 +1,8 @@
 import 'package:fi_player/screens/screen_settings/screen_settings.dart';
 import 'package:fi_player/screens/splash/screen_splash.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 import '../screens/screen_help/screen_help.dart';
 
 bool isDarkMode = false;
@@ -80,8 +81,8 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {
-              Share.share(
+            onTap: () async {
+              await Share.share(
                   'Check out this awesome app!\nhttps://play.google.com/store/apps/details?id=com.lebowski.fi_player');
             },
             leading: const Icon(Icons.share, color: Colors.purple),
@@ -89,7 +90,25 @@ class DrawerWidget extends StatelessWidget {
               'Share Fi Player',
               style: TextStyle(color: allTextColor),
             ),
-          )
+          ),
+          const SizedBox(
+            height: 150,
+          ),
+          FutureBuilder<PackageInfo>(
+            future: _getPackageInfo(),
+            builder:
+                (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
+              if (snapshot.hasData) {
+                return Center(child: Text('Version ${snapshot.data!.version}'));
+              } else {
+                return const Text('');
+              }
+            },
+          ),
         ]);
+  }
+
+  Future<PackageInfo> _getPackageInfo() async {
+    return await PackageInfo.fromPlatform();
   }
 }
